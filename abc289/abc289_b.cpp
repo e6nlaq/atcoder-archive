@@ -1,4 +1,4 @@
-﻿
+
 /*---------------------------------------------------
 
 
@@ -87,7 +87,7 @@
 #include <bits/stdc++.h>
 
 // #ifdef __A_LOCAL_
-// #include "atcoder/all"
+// #include "atcoder/all"s
 // #else
 // #include <atcoder/all>
 // #endif
@@ -466,7 +466,7 @@ inline string tobinary(int n)
 template <typename T>
 inline void print(const vector<T> &v, string s = " ")
 {
-	rep(i, v.size()) cout << v[i] << (i != (ll)v.size() - 1 ? s : "\n");
+	rep(i, v.size()) cout << v[i] << (i != (ll)v.size() - 1 ? s : "");
 }
 
 /**
@@ -745,18 +745,55 @@ ll ans = 0;
 
 /* Main Function */
 
+#include "atcoder/dsu.hpp"
+using namespace atcoder;
+
 int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll A, B;
+	ll M, a;
+	vi onread;
+	vvi gro;
 
-	cin >> N;
+	cin >> N >> M;
 
-	rep(i, N)
+	if (M == 0)
 	{
-		cin >> A >> B;
-		co(A + B);
+		for (int i = 1; i < N + 1; i++)
+		{
+			if (i != N)
+				cout << i << " ";
+			else
+				cout << i << "\n";
+		}
+
+		exit;
+	}
+
+	dsu G(N + 1);
+
+	rep(i, M)
+	{
+		cin >> a;
+		G.merge(a, a + 1);
+	}
+
+	gro = G.groups();
+
+	for (int i = 1; i < N + 1; i++)
+	{
+		// if (!count(all(onread), i))
+		// {
+		vi ren = gro[i];
+		sort(rall(ren));
+		rep(j, ren.size())
+		{
+			onread.push_back(ren[j]);
+			if (i != N)
+				cout << ren[j] << " ";
+		}
+		// }
 	}
 
 	return 0;

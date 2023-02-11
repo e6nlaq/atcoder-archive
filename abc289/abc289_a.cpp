@@ -749,15 +749,19 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll A, B;
+	string s;
 
-	cin >> N;
+	cin >> s;
 
-	rep(i, N)
+	rep(i, s.size())
 	{
-		cin >> A >> B;
-		co(A + B);
+		if (s[i] == '0')
+			cout << "1";
+		else
+			cout << "0";
 	}
+
+	cout << endl;
 
 	return 0;
 }

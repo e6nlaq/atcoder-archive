@@ -87,7 +87,7 @@
 #include <bits/stdc++.h>
 
 // #ifdef __A_LOCAL_
-// #include "atcoder/all"
+// #include "atcoder/all"s
 // #else
 // #include <atcoder/all>
 // #endif
@@ -749,15 +749,49 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll A, B;
+	ll M, C;
 
-	cin >> N;
+	cin >> N >> M;
 
-	rep(i, N)
+	vvll a(10, vll(10));
+
+	rep(i, M)
 	{
-		cin >> A >> B;
-		co(A + B);
+		cin >> C;
+		rep(j, C)
+		{
+			cin >> a[i][j];
+		}
 	}
+
+	rep(i, (1 << M))
+	{
+		bitset<10> b(i);
+		vll test = {};
+		bool isok = true;
+
+		rep(j, 10)
+		{
+			if (b.test(j))
+			{
+				rep(k, 10) test.push_back(a[j][k]);
+			}
+		}
+
+		rep(j, N)
+		{
+			if (!count(all(test), j + 1))
+			{
+				isok = false;
+				break;
+			}
+		}
+
+		if (isok)
+			ans++;
+	}
+
+	co(ans);
 
 	return 0;
 }
