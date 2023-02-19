@@ -787,9 +787,13 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	co(S.substr(1) + S.front());
+	if (N < 40)
+		co(40 - N);
+	elif (N < 70) co(70 - N);
+	elif (N < 90) co(90 - N);
+	else co("expert");
 
 	return 0;
 }

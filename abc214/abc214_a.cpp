@@ -787,9 +787,12 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	co(S.substr(1) + S.front());
+	if (N <= 125)
+		co(4);
+	elif (N <= 211) co(6);
+	else co(8);
 
 	return 0;
 }

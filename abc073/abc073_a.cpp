@@ -789,7 +789,7 @@ int main(int argc, char const *argv[])
 
 	cin >> S;
 
-	co(S.substr(1) + S.front());
+	YesNo(count(all(S), '9'));
 
 	return 0;
 }

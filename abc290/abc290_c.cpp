@@ -783,13 +783,56 @@ string S = "";
 
 /* Main Function */
 
+ll mex(vll A)
+{
+	sort(all(A));
+	ll tmp = 0;
+	bool ok = true;
+
+	while (ok)
+	{
+		if (count(all(A), tmp))
+		{
+			tmp++;
+		}
+		else
+		{
+			return tmp;
+			ok = false;
+		}
+	}
+}
+
 int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	ll K;
 
-	co(S.substr(1) + S.front());
+	cin >> N >> K;
+
+	set<ll> A;
+
+	rep(i, N)
+	{
+		ll tmp = 0;
+		cin >> tmp;
+		A.insert(tmp);
+	}
+
+	rep(i, K)
+	{
+		if (A.count(i))
+		{
+		}
+		else
+		{
+			co(i);
+			exit;
+		}
+	}
+
+	co(K);
 
 	return 0;
 }

@@ -787,9 +787,20 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	co(S.substr(1) + S.front());
+	vi A(N);
+	vcin(A);
+
+	rep(i, N)
+	{
+		if (A[i] > 10)
+		{
+			ans += A[i] - 10;
+		}
+	}
+
+	co(ans);
 
 	return 0;
 }

@@ -787,9 +787,27 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	ll K, yosen = 0;
 
-	co(S.substr(1) + S.front());
+	cin >> N >> K >> S;
+
+	rep(i, N)
+	{
+		if (yosen < K)
+		{
+			if (S[i] == 'o')
+			{
+				yosen++;
+				cout << "o";
+			}
+			else
+				cout << "x";
+		}
+		else
+			cout << "x";
+	}
+
+	cout << endl;
 
 	return 0;
 }

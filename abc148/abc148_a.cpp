@@ -787,9 +787,15 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	vi A(2);
+	vcin(A);
 
-	co(S.substr(1) + S.front());
+	sort(all(A));
+
+	if (A[0] == 1 && A[1] == 2)
+		co(3);
+	elif (A[0] == 2 && A[1] == 3) co(1);
+	elif (A[0] == 1 && A[1] == 3) co(2);
 
 	return 0;
 }

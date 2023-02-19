@@ -787,9 +787,10 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	bool x;
+	cin >> x;
 
-	co(S.substr(1) + S.front());
+	co((int)!x);
 
 	return 0;
 }

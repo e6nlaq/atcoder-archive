@@ -787,9 +787,14 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
+	string tmp;
+
 	cin >> S;
 
-	co(S.substr(1) + S.front());
+	tmp = S;
+	reverse(all(S));
+
+	YesNo(S == tmp);
 
 	return 0;
 }
