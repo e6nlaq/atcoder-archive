@@ -787,21 +787,11 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll M;
+	ll X, Y, Z;
 
-	cin >> N >> M;
+	cin >> X >> Y >> Z;
 
-	vll A(N), B(M);
-
-	vcin(A);
-	vcin(B);
-
-	rep(i, M)
-	{
-		ans += A[B[i] - 1];
-	}
-
-	co(ans);
+	co((Z + X < Y ? Y : Z + X));
 
 	return 0;
 }

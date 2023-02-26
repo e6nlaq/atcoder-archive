@@ -787,21 +787,18 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll M;
+	cin >> S;
 
-	cin >> N >> M;
-
-	vll A(N), B(M);
-
-	vcin(A);
-	vcin(B);
-
-	rep(i, M)
+	if (S.size() < 3)
 	{
-		ans += A[B[i] - 1];
+		ld a = stold(S);
+		a /= 100;
+		co((ll)floor(a));
 	}
-
-	co(ans);
+	else
+	{
+		co(S.substr(0, S.size() - 2));
+	}
 
 	return 0;
 }

@@ -6,7 +6,7 @@
 	   Welcome to my template!
 
 	　　∧＿∧        @x__0
-	　 ( 　･ω･)      ver 5.2.2
+	　 ( 　･ω･)      ver 5.2.4
 	＿(__つ/￣￣￣ /  CC BY 4.0
 	　　＼/　　　　 /  C++ GCC 9.2.0
 	　　　　￣￣￣￣￣
@@ -84,6 +84,9 @@
 //
 // 5.2.3
 // 素因数分解・Nの約数の数を求める関数の追加
+//
+// 5.2.4
+// 名前とか変えた
 
 #pragma region AtCoder Template
 
@@ -155,7 +158,7 @@ using qc = queue<char>;
 #define irep(i, n) for (ll i = 1; i < (ll)(n) + 1; i++)
 #define arep(i, a, n) for (ll i = (a); i < (ll)(n); i++)
 #define adrep(i, a, d, n) for (ll i = (a); i < (ll)(n); i += d)
-#define rwhile(b) while (!(b))
+#define until(b) while (!(b)) // なにがrwhileだ!untilだぞ!
 
 // 省略define
 #define all(x) (x).begin(), (x).end()
@@ -775,7 +778,7 @@ T divisor_num(T N)
 #pragma endregion
 
 /* Variables */
-ll N;
+ll N, M;
 ll ans = 0;
 // bool ans = true;
 // string ans = "";
@@ -787,21 +790,45 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll M;
+	cin >> N >> S;
 
-	cin >> N >> M;
+	// vector<pair<ll, ll>> c(N + 1);
+	set<pair<ll, ll>> c;
 
-	vll A(N), B(M);
+	ll x = 0, y = 0;
+	c.insert(make_pair(0, 0));
 
-	vcin(A);
-	vcin(B);
-
-	rep(i, M)
+	rep(i, N)
 	{
-		ans += A[B[i] - 1];
+		switch (S[i])
+		{
+		case 'R':
+			x++;
+			break;
+
+		case 'L':
+			x--;
+			break;
+
+		case 'U':
+			y++;
+			break;
+
+		case 'D':
+			y--;
+			break;
+		}
+
+		if (c.count(make_pair(x, y)))
+		{
+			co("Yes");
+			exit;
+		}
+
+		c.insert(make_pair(x, y));
 	}
 
-	co(ans);
+	co("No");
 
 	return 0;
 }

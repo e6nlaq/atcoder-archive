@@ -6,7 +6,7 @@
 	   Welcome to my template!
 
 	　　∧＿∧        @x__0
-	　 ( 　･ω･)      ver 5.2.2
+	　 ( 　･ω･)      ver 5.2.4
 	＿(__つ/￣￣￣ /  CC BY 4.0
 	　　＼/　　　　 /  C++ GCC 9.2.0
 	　　　　￣￣￣￣￣
@@ -84,6 +84,9 @@
 //
 // 5.2.3
 // 素因数分解・Nの約数の数を求める関数の追加
+//
+// 5.2.4
+// 名前とか変えた
 
 #pragma region AtCoder Template
 
@@ -155,7 +158,7 @@ using qc = queue<char>;
 #define irep(i, n) for (ll i = 1; i < (ll)(n) + 1; i++)
 #define arep(i, a, n) for (ll i = (a); i < (ll)(n); i++)
 #define adrep(i, a, d, n) for (ll i = (a); i < (ll)(n); i += d)
-#define rwhile(b) while (!(b))
+#define until(b) while (!(b)) // なにがrwhileだ!untilだぞ!
 
 // 省略define
 #define all(x) (x).begin(), (x).end()
@@ -775,7 +778,7 @@ T divisor_num(T N)
 #pragma endregion
 
 /* Variables */
-ll N;
+ll N, M;
 ll ans = 0;
 // bool ans = true;
 // string ans = "";
@@ -787,21 +790,16 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll M;
+	cin >> S;
 
-	cin >> N >> M;
-
-	vll A(N), B(M);
-
-	vcin(A);
-	vcin(B);
-
-	rep(i, M)
+	rep(i, S.size())
 	{
-		ans += A[B[i] - 1];
+		if (isupper(S[i]))
+		{
+			co(i + 1);
+			exit;
+		}
 	}
-
-	co(ans);
 
 	return 0;
 }
