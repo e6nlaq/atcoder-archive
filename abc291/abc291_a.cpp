@@ -6,7 +6,7 @@
 	   Welcome to my template!
 
 	　　∧＿∧        @x__0
-	　 ( 　･ω･)      ver 5.2.4
+	　 ( 　･ω･)      ver 5.2.5
 	＿(__つ/￣￣￣ /  CC BY 4.0
 	　　＼/　　　　 /  C++ GCC 9.2.0
 	　　　　￣￣￣￣￣
@@ -87,6 +87,9 @@
 //
 // 5.2.4
 // 名前とか変えた
+//
+// 5.2.5
+// 型追加
 
 #pragma region AtCoder Template
 
@@ -121,9 +124,11 @@ using vll = vector<ll>;
 using vb = vector<bool>;
 using vc = vector<char>;
 using vs = vector<string>;
-using vd = vector<ld>;
+using vd = vector<double>;
+using vld = vector<ld>;
 using pii = pair<int, int>;
 using pll = pair<ll, ll>;
+using pdd = pair<ld, ld>;
 using psi = pair<string, int>;
 using psl = pair<string, ll>;
 using pci = pair<char, int>;
@@ -133,6 +138,7 @@ using vvll = vector<vll>;
 using vvc = vector<vc>;
 using vvs = vector<vs>;
 using vvb = vector<vb>;
+using vvld = vector<vld>;
 using vpii = vector<pii>;
 using vpsi = vector<psi>;
 using vpci = vector<pci>;
@@ -145,6 +151,8 @@ using msi = map<string, int>;
 using msl = map<string, ll>;
 using msvi = map<string, vi>;
 using sll = set<ll>;
+using spll = set<pair<ll, ll>>;
+using spdd = set<pair<ld, ld>>;
 using stll = stack<ll>;
 using qll = queue<ll>;
 using qi = queue<int>;
