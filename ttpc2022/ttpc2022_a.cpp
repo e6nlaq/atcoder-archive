@@ -554,7 +554,7 @@ inline long long pow_ll(long long x, long long n)
 /// @brief N進数の文字から10進数の数値に変換します
 /// @param c N進数の文字
 /// @return 変換した10進数の数値
-int ntodec(const char c)
+inline int ntodec(const char c)
 {
 	switch (c)
 	{
@@ -638,7 +638,7 @@ int ntodec(const char c)
 /// @brief 10進数の数値をN進数の文字に変換します
 /// @param n 10進数の数値
 /// @return N進数の文字
-char decton(const int n)
+inline char decton(const int n)
 {
 	switch (n)
 	{
@@ -724,7 +724,7 @@ char decton(const int n)
 /// @param n 文字の進数
 /// @param m 出力の進数
 /// @return M進数の文字
-string n_ary(string str, int n, int m)
+inline string n_ary(string str, int n, int m)
 {
 	unsigned long tmp = 0;
 	string ret;
@@ -749,7 +749,7 @@ string n_ary(string str, int n, int m)
 /// @param n 素因数分解する数
 /// @return 不明
 template <typename T>
-map<T, T> prime_factor(T n)
+inline map<T, T> prime_factor(T n)
 {
 	map<T, T> ret;
 	for (T i = 2; i * i <= n; i++)
@@ -772,7 +772,7 @@ map<T, T> prime_factor(T n)
 /// @param N 約数の数を求める数
 /// @return Nの約数の数
 template <typename T>
-T divisor_num(T N)
+inline T divisor_num(T N)
 {
 	map<T, T> pf = prime_factor(N);
 	T ret = 1;
@@ -780,6 +780,25 @@ T divisor_num(T N)
 	{
 		ret *= (p.second + 1);
 	}
+	return ret;
+}
+
+/// @brief nの約数を全列挙します。(計算量: O(sqrt(N)))
+/// @param n 全列挙する約数
+/// @return nの約数
+inline vll divisor(ll n)
+{
+	vll ret;
+	for (ll i = 1; i * i <= n; i++)
+	{
+		if (n % i == 0)
+		{
+			ret.push_back(i);
+			if (i * i != n)
+				ret.push_back(n / i);
+		}
+	}
+	sort(ret.begin(), ret.end());
 	return ret;
 }
 
@@ -798,11 +817,11 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	bool a;
+	ll X, Y;
 
-	cin >> a;
+	cin >> X >> Y;
 
-	co((int)!a);
+	print(divisor(gcd(X - 2015, Y - 2015)), "\n");
 
 	return 0;
 }
