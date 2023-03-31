@@ -870,17 +870,26 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	rep(i, S.size())
+	ll ans_1 = 0, ans_2 = 0;
+
+	vll A(N), B(N);
+
+	vcin(A);
+	vcin(B);
+
+	rep(i, N)
 	{
-		if (islower(S[i]))
-		{
-			S[i] = toupper(S[i]);
-		}
+		if (A[i] == B[i])
+			ans_1++;
+
+		if (count(all(B), A[i]))
+			ans_2++;
 	}
 
-	co(S);
+	co(ans_1);
+	co(ans_2 - ans_1);
 
 	return 0;
 }

@@ -870,17 +870,27 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	rep(i, S.size())
+	set<pair<string, string>> S;
+
+	rep(i, N)
 	{
-		if (islower(S[i]))
+		string T, D;
+		cin >> T >> D;
+
+		if (S.count(make_pair(T, D)))
 		{
-			S[i] = toupper(S[i]);
+			co("Yes");
+			exit;
+		}
+		else
+		{
+			S.insert(make_pair(T, D));
 		}
 	}
 
-	co(S);
+	co("No");
 
 	return 0;
 }

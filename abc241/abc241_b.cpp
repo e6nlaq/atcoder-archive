@@ -870,17 +870,35 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	cin >> S;
+	cin >> N >> M;
 
-	rep(i, S.size())
+	map<ll, ll> A;
+
+	rep(i, N)
 	{
-		if (islower(S[i]))
+		ll tmp;
+		cin >> tmp;
+
+		A[tmp]++;
+	}
+
+	rep(i, M)
+	{
+		ll B;
+		cin >> B;
+
+		if (A[B])
 		{
-			S[i] = toupper(S[i]);
+			A[B]--;
+		}
+		else
+		{
+			co("No");
+			exit;
 		}
 	}
 
-	co(S);
+	co("Yes");
 
 	return 0;
 }
