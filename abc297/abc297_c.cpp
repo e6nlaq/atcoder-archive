@@ -7,26 +7,16 @@ int main()
 	int H, W;
 	cin >> H >> W;
 
-	vector<string> S(H);
-
-	for (int i = 0; i < H; i++)
-		cin >> S[i];
-
-	for (int i = 0; i < H; i++)
+	while (H--)
 	{
-		for (int j = 0; j < W - 1; j++)
+		string S;
+		cin >> S;
+
+		while (S.find("TT") != string::npos)
 		{
-			if (S[i][j] == 'T' && S[i][j + 1] == 'T')
-			{
-				S[i][j] = 'P';
-				S[i][j + 1] = 'C';
-			}
+			S.replace(S.find("TT"), 2, "PC");
 		}
-	}
-
-	for (int i = 0; i < H; i++)
-	{
-		cout << S[i] << endl;
+		cout << S << endl;
 	}
 
 	return 0;
