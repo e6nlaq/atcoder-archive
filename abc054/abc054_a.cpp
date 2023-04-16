@@ -848,18 +848,15 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ll A, B;
+	cin >> A >> B;
 
-	rep(i, s.size())
-	{
-		if (i % 2 == 0)
-		{
-			cout << s[i];
-		}
-	}
+	if (A == 1)
+		A = 14;
+	if (B == 1)
+		B = 14;
 
-	cout << endl;
+	co((A > B ? "Alice" : (A == B ? "Draw" : "Bob")));
 
 	return 0;
 }

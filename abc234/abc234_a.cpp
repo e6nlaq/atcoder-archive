@@ -844,22 +844,19 @@ string S = "", T = "";
 
 /* Main Function */
 
+ll f(ll x)
+{
+	return powl(x, 2) + 2 * x + 3;
+}
+
 int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ll t;
+	cin >> t;
 
-	rep(i, s.size())
-	{
-		if (i % 2 == 0)
-		{
-			cout << s[i];
-		}
-	}
-
-	cout << endl;
+	co(f(f(f(t) + t) + f(f(t))));
 
 	return 0;
 }

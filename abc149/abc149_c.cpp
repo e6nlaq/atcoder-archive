@@ -848,18 +848,13 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ll X;
+	cin >> X;
 
-	rep(i, s.size())
-	{
-		if (i % 2 == 0)
-		{
-			cout << s[i];
-		}
-	}
+	while (!isprime(X))
+		X++;
 
-	cout << endl;
+	co(X);
 
 	return 0;
 }

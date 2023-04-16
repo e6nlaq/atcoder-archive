@@ -848,18 +848,46 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	cin >> N >> Q;
 
-	rep(i, s.size())
+	unmap<ll, multiset<ll>> box;
+	unmap<ll, set<ll>> card;
+
+	while (Q--)
 	{
-		if (i % 2 == 0)
+		ll query, i, j;
+		cin >> query;
+
+		switch (query)
 		{
-			cout << s[i];
+		case 1:
+			cin >> i >> j;
+
+			box[j].insert(i);
+			card[i].insert(j);
+			break;
+
+		case 2:
+			cin >> i;
+
+			for (auto x : box[i])
+			{
+				cout << x << " ";
+			}
+			cout << endl;
+			break;
+
+		case 3:
+			cin >> i;
+
+			for (auto x : card[i])
+			{
+				cout << x << " ";
+			}
+			cout << endl;
+			break;
 		}
 	}
-
-	cout << endl;
 
 	return 0;
 }

@@ -848,18 +848,32 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ll A = 0, B = 0;
+	priority_queue<ll> a;
+	cin >> N;
 
-	rep(i, s.size())
+	rep(i, N)
+	{
+		ll tmp;
+		cin >> tmp;
+		a.push(tmp);
+	}
+
+	rep(i, N)
 	{
 		if (i % 2 == 0)
 		{
-			cout << s[i];
+			A += a.top();
 		}
+		else
+		{
+			B += a.top();
+		}
+
+		a.pop();
 	}
 
-	cout << endl;
+	co(A - B);
 
 	return 0;
 }

@@ -848,18 +848,28 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ll X;
 
-	rep(i, s.size())
+	cin >> N >> X;
+	X--;
+
+	vll A(N);
+	unset<ll> know = {X};
+	vcin(A);
+
+	while (true)
 	{
-		if (i % 2 == 0)
+		X = A[X] - 1;
+		if (know.count(X))
 		{
-			cout << s[i];
+			co(ans + 1);
+			exit;
 		}
+		know.insert(X);
+		ans++;
 	}
 
-	cout << endl;
+	co(ans);
 
 	return 0;
 }

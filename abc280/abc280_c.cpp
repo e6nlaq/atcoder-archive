@@ -848,18 +848,16 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	cin >> S >> T;
 
-	rep(i, s.size())
+	rep(i, S.size() + 1)
 	{
-		if (i % 2 == 0)
+		if (S[i] != T[i])
 		{
-			cout << s[i];
+			co(i + 1);
+			exit;
 		}
 	}
-
-	cout << endl;
 
 	return 0;
 }

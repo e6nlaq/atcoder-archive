@@ -848,18 +848,10 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	string s;
-	cin >> s;
+	ld a, b;
+	cin >> a >> b;
 
-	rep(i, s.size())
-	{
-		if (i % 2 == 0)
-		{
-			cout << s[i];
-		}
-	}
-
-	cout << endl;
+	co((ll)ceil((a + b) / 2));
 
 	return 0;
 }
