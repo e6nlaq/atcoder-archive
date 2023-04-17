@@ -840,7 +840,7 @@ ll N, M, Q;
 ll ans = 0;
 // bool ans = true;
 // string ans = "";
-string S = "", T = "";
+// string S = "", T = "";
 
 /* Main Function */
 
@@ -848,10 +848,10 @@ int main(int argc, char const *argv[])
 {
 	fastio;
 
-	ll H1, H2;
-	cin >> H1 >> H2;
+	ld A, B, T;
+	cin >> A >> B >> T;
 
-	co(H1 - H2);
+	co((ll)(floorl(T / A) * B));
 
 	return 0;
 }
