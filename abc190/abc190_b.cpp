@@ -1,121 +1,69 @@
-﻿
-/*---------------------------------------------------
+﻿/*---------------------------------------------------
 
 
 
-	   Welcome to my template!
+	   Welcome to my program!
 
 	　　∧＿∧        @x__0
-	　 ( 　･ω･)      ver 5.2.8
-	＿(__つ/￣￣￣ /  CC BY 4.0
-	　　＼/　　　　 /  C++ GCC 11.3.0
+	　 ( 　･ω･)
+	＿(__つ/￣￣￣ /  MIT License
+	　　＼/　　　　 /  C++ GCC 11.3.0 + Boost 1.82.0
 	　　　　￣￣￣￣￣
 		   Let's write Code!
 
 
 ---------------------------------------------------*/
 
-// 更新履歴
-//
-// 5.0.0
-// 更新履歴をすべて削除
-// 更新履歴を日本語化
-// 新カテゴリ「高速化」を追加 (提供:https://zenn.dev/antyuntyun)
-// 関数 printを追加
-// すべての関数をinline化
-// ほとんどの引数を定数化
-// ctoll関数及びaverl関数が5.1.0で廃止予定になりました
-// 型エイリアスllがlong longから__int128_tに変更になりました
-// ullも上記のとおりです
-// ファイルの先頭が変わりました
-//
-// 5.0.1
-// ullのバグにより元に戻しました。
-//
-// 5.0.2
-// タイトルのインシデントを減らしました。
-// 構造体Weekを追加しました。
-//
-// 5.0.3
-// 定数PIをacos(-1)に変更しました。
-//
-// 5.0.4
-// llをlonglongに変更しました。
-//
-// 5.0.5
-// 互換性関数lcm及びgcdを追加
-//
-// 5.0.6
-// 5.0.5で追加された関数をすべて削除
-//
-// 5.0.7
-// repマクロを一部変更
-//
-// 5.0.8
-// 型エイリアスmii,mllを追加
-//
-// 5.0.9
-// 関数vcinを追加
-//
-// 5.0.10
-// 関数minisumを変更
-//
-// 5.1.0
-// double関係の型を追加
-// srev関数を追加
-// マクロdebugを関数に変更
-// 不要になった関数を削除
-//
-// 5.1.1
-// グローバル変数を追加
-//
-// 5.1.2
-// 関数 atfindを追加
-//
-// 5.2.0
-// AC Libraryに対応
-//
-// 5.2.1
-// https://qiita.com/Shiro-san/items/9376c8898a0882482a6a
-// より関数を拝借
-//
-// 5.2.2
-// 緊急処理
-//
-// 5.2.3
-// 素因数分解・Nの約数の数を求める関数の追加
-//
-// 5.2.4
-// 名前とか変えた
-//
-// 5.2.5
-// 型追加
-//
-// 5.2.6
-// 関数isint,v2cin追加
-//
-// 5.2.7
-// 関数vcinシリーズを強化
-//
-// 5.2.8
-// 変数追加
-
+// Return Code 139(out_of_range)が出たら試す
 // #define _GLIBCXX_DEBUG
+
+// Boost系
+// #include <boost/multiprecision/cpp_int.hpp>			 // クソでか整数
+// #include <boost/multiprecision/cpp_dec_float.hpp>	 // クソでか小数
+// #include <boost/math/constants/constants.hpp>		 // ウルトラ円周率
+// #include <boost/date_time/gregorian/gregorian.hpp>	 // 申し訳程度の日付演算
+
+// #include <boost/algorithm/string/split.hpp>			 // 文字列をcharで分割(split)
+// #include <boost/algorithm/string/classification.hpp> // 上の文字指定に必要
+// #include <boost/algorithm/string/iter_find.hpp>		 // 文字列をstringで分割(iter_split)
+// #include <boost/algorithm/string/finder.hpp>		 // 上の文字列指定に必要
+
+// #include <boost/algorithm/string/join.hpp>			 // 他の言語のjoinを実装するやつ
+// #include <boost/algorithm/string/replace.hpp>		 // 全部置き換え
+
+// #include <boost/dynamic_bitset.hpp>					 // サイズ変更可bitset
+// #include <boost/range/algorithm/for_each.hpp>		 // 関数でforeach文
+
+// #include <boost/assert.hpp> // 上位デバッグ
+
+// Boost名前空間省略
+// namespace mu = boost::multiprecision;
+// namespace ag = boost::algorithm;
+
+// AtCoder Library
+// #include <atcoder/all>
+// using namespace atcoder;
 
 #pragma region AtCoder Template
 
 #include <bits/stdc++.h>
-#include <atcoder/all>
 using namespace std;
-using namespace atcoder;
+
+#ifdef _LOCAL_
+#include "./lib/debug_print.hpp"
+#define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
+#else
+#define debug(...) (static_cast<void>(0))
+#endif
 
 // 高速化
-#pragma GCC target("avx")
+#pragma GCC target("avx,avx2")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
+
 #define fastio                         \
 	cin.tie(nullptr);                  \
-	cout.tie(nullptr);                 \
 	ios::sync_with_stdio(false);       \
 	cout << fixed << setprecision(15); \
 	srand((unsigned)time(NULL));
@@ -170,11 +118,13 @@ using qi = queue<int>;
 using qd = queue<ld>;
 using qs = queue<string>;
 using qc = queue<char>;
+#define unmap unordered_map
+#define unset unordered_set
 
 // マクロ
 #define rep(i, n) for (ull i = 0; i < (ull)(n); i++)
-#define rrep(i, n) for (ull i = (n); i = 0; i--)
-#define irep(i, n) for (ll i = 1; i < (ll)(n) + 1; i++)
+#define rrep(i, n) for (ll i = (n)-1; i >= 0; i--)
+#define irep(i, n) for (ll i = 1; i <= (ll)(n); i++)
 #define arep(i, a, n) for (ll i = (a); i < (ll)(n); i++)
 #define adrep(i, a, d, n) for (ll i = (a); i < (ll)(n); i += d)
 #define until(b) while (!(b)) // なにがrwhileだ!untilだぞ!
@@ -247,7 +197,7 @@ using qc = queue<char>;
 #define mp make_pair
 #define tos to_string
 #define sz size()
-#define exit return 0
+#define exit exit(0)
 #define co(x) cout << (x) << endl
 
 // 定数
@@ -263,19 +213,79 @@ const ll j2_32 = pow(2, 32);
 const ll j2_m32 = pow(2, -32);
 const ll j2_10 = pow(2, 10);
 
-// 構造体
+// 色々なテンプレ(完全コピペ)
 
-// 曜日の構造体です。日曜日が0となります
-enum Week
+template <class T>
+size_t HashCombine(const size_t seed, const T &v)
 {
-	Sunday,
-	Monday,
-	Tuesday,
-	Wednesday,
-	Thursday,
-	Friday,
-	Saturday
+	return seed ^ (std::hash<T>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+}
+/* pair用 */
+template <class T, class S>
+struct std::hash<std::pair<T, S>>
+{
+	size_t operator()(const std::pair<T, S> &keyval) const noexcept
+	{
+		return HashCombine(std::hash<T>()(keyval.first), keyval.second);
+	}
 };
+/* vector用 */
+template <class T>
+struct std::hash<std::vector<T>>
+{
+	size_t operator()(const std::vector<T> &keyval) const noexcept
+	{
+		size_t s = 0;
+		for (auto &&v : keyval)
+			s = HashCombine(s, v);
+		return s;
+	}
+};
+/* tuple用 */
+template <int N>
+struct HashTupleCore
+{
+	template <class Tuple>
+	size_t operator()(const Tuple &keyval) const noexcept
+	{
+		size_t s = HashTupleCore<N - 1>()(keyval);
+		return HashCombine(s, std::get<N - 1>(keyval));
+	}
+};
+template <>
+struct HashTupleCore<0>
+{
+	template <class Tuple>
+	size_t operator()(const Tuple &keyval) const noexcept { return 0; }
+};
+template <class... Args>
+struct std::hash<std::tuple<Args...>>
+{
+	size_t operator()(const tuple<Args...> &keyval) const noexcept
+	{
+		return HashTupleCore<tuple_size<tuple<Args...>>::value>()(keyval);
+	}
+};
+
+std::string
+operator""_s(char const *str, std::size_t)
+{
+	return str;
+}
+
+std::string
+operator*(std::string const &str, int n)
+{
+	if (n < 1)
+		return "";
+	std::string result;
+	result.reserve(str.length() * n);
+	for (int i = 0; i < n; ++i)
+	{
+		result += str;
+	}
+	return result;
+}
 
 // 関数類
 
@@ -363,29 +373,6 @@ inline int minisum(const int n)
 inline void flip(bool &b)
 {
 	b = !b;
-}
-
-/**
- * @brief 平均を求めます。
- *
- * @tparam T 返り値の型
- * @param arg 入力がいくつあるか
- * @param arg1 入力1
- * @param arg2 入力2
- * @param arg3 入力3
- * @param arg4 入力4
- * @param arg5 入力5
- * @param arg6 入力6
- * @param arg7 入力7
- * @param arg8 入力8
- * @param arg9 入力9
- * @param arg10 入力10
- * @return double 平均
- */
-template <typename T>
-inline T aver(int arg, int arg1, int arg2, int arg3 = 0, int arg4 = 0, int arg5 = 0, int arg6 = 0, int arg7 = 0, int arg8 = 0, int arg9 = 0, int arg10 = 0)
-{
-	return (arg1 + arg2 + arg3 + arg4 + arg5 + arg6 + arg7 + arg8 + arg9 + arg10) / arg;
 }
 
 /**
@@ -489,6 +476,19 @@ inline void print(const vector<T> &v, string s = " ")
 	rep(i, v.size()) cout << v[i] << (i != (ll)v.size() - 1 ? s : "\n");
 }
 
+/// @brief 二次元配列の全要素を出力します
+/// @tparam T 配列の型(vector<vector<T>>)
+/// @param v 二次元配列
+/// @param s 区切り文字
+template <typename T>
+inline void print(const vector<vector<T>> &v, string s = " ")
+{
+	rep(i, v.size())
+	{
+		rep(j, v[i].size()) cout << v[i][j] << (j != (ll)v[i].size() - 1 ? s : "\n");
+	}
+}
+
 /**
  * @brief 配列を入力します
  *
@@ -508,7 +508,7 @@ inline void vcin(vector<Tp1> &v)
 /// @param b 2つめの配列
 /// @throw v.size()!=b.size()の場合に投げられます。
 template <typename Tp1, typename Tp2>
-inline void v2cin(vector<Tp1> &v, vector<Tp2> &b)
+inline void vcin(vector<Tp1> &v, vector<Tp2> &b)
 {
 	assert(v.size() == b.size());
 	rep(i, v.size()) cin >> v[i] >> b[i];
@@ -518,7 +518,7 @@ inline void v2cin(vector<Tp1> &v, vector<Tp2> &b)
 /// @tparam Tp1 vector<vector<Tp1>>の型
 /// @param v 二次元配列
 template <typename Tp1>
-inline void vvcin(vector<vector<Tp1>> &v)
+inline void vcin(vector<vector<Tp1>> &v)
 {
 	rep(i, v.size())
 	{
@@ -539,39 +539,6 @@ inline string srev(string s)
 {
 	reverse(all(s));
 	return s;
-}
-
-/**
- * @brief コードのデバッグ出力用関数です
- *
- * @tparam arg1 変数の型
- * @param x 出力する変数
- */
-template <typename arg1>
-inline void debug(arg1 x)
-{
-#ifdef _LOCAL_
-	cout << "\033[32mDebug\033[m: " << x << endl;
-#else
-	cerr << "Debug: " << x << endl;
-#endif
-}
-
-/// @brief 配列の要素を検索します
-/// @tparam arg1 配列の型
-/// @tparam arg2 要素の型
-/// @param v 配列
-/// @param a 要素
-/// @return 配列内の要素の添字
-template <typename arg1, typename arg2>
-inline ll atfind(arg1 v, arg2 a)
-{
-	auto it = find(all(v), a);
-
-	if (it != v.end())
-		return it - v.begin();
-	else
-		return -1;
 }
 
 /// @brief long longでべき乗します
@@ -857,37 +824,202 @@ inline bool isint(string s)
 	return true;
 }
 
+/// @brief 二次元配列を90度時計回りに回転する
+/// @tparam T 配列の型(vector<vector<T>>)
+/// @param arr 二次元配列
+/// @return 返り値
+template <typename T>
+inline vector<vector<T>> rot90(vector<vector<T>> A)
+{
+	ll N = A.size(), M = A[0].size();
+	vector<vector<T>> ret(M, vector<T>(N));
+
+	ll _i = 0, _j = 0;
+
+	rep(j, M)
+	{
+		for (ll i = N - 1; i >= 0; i--)
+		{
+			ret[_i][_j] = A[i][j];
+			_j++;
+		}
+		_j = 0;
+		_i++;
+	}
+
+	return ret;
+}
+
+/// @brief 回文かどうか判定
+/// @param str 文字列
+/// @return 回文かどうか
+inline bool ispalind(const string str)
+{
+	int n = str.length();
+	for (int i = 0; i < n / 2; i++)
+	{
+		if (str[i] != str[n - i - 1])
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+/// @brief startからnまでの順列を生成
+/// @param n 最大値
+/// @param start 開始値
+/// @return startからnまでの順列
+inline vector<ll> range(ll n, ll start = 0)
+{
+	vector<ll> ret(n - start);
+	ll oi = 0;
+	for (ll i = start; i <= n; i++)
+	{
+		ret[oi] = i;
+		oi++;
+	}
+
+	return ret;
+}
+
+/// @brief 10進法で表した時の各桁の和を求めます
+/// @param s 10進法で表した文字列
+/// @return 各桁の和
+inline ll csum(string s)
+{
+	ll ret = 0;
+	rep(i, s.size())
+	{
+		ret += ctoi(s[i]);
+	}
+
+	return ret;
+}
+
+/// @brief csumの数値用の補完関数
+/// @param n 数値
+/// @return 各桁の和
+inline ll csum(ll n)
+{
+	return csum(to_string(n));
+}
+
+/// @brief 階乗を計算する
+/// @param n nの階乗
+/// @return nの階乗
+inline ll fact(ll n)
+{
+	ll ret = 1;
+	rep(i, n)
+	{
+		ret *= i + 1;
+	}
+	return ret;
+}
+
+/// @brief 平方数かどうかを判定
+/// @param N 判定する数
+/// @return 平方数かどうか
+inline bool is_squere(long long N)
+{
+	long long r = (long long)floor(sqrt((long double)N)); // 切り捨てした平方根
+	return (r * r) == N;
+}
+
+/// @brief 一次元の累積和を返します
+/// @tparam T vectorの型
+/// @param v 加工する前の配列
+/// @return 加工後の配列(長さは |v|+1 となります。)
+template <typename T>
+inline vector<T> cumulative(vector<T> v)
+{
+	vector<T> cum(v.size() + 1);
+	cum[0] = 0;
+	for (int i = 1; i <= v.size(); i++)
+	{
+		cum[i] = cum[i - 1] + v[i - 1];
+	}
+	return cum;
+}
+
+/// @brief 二次元の累積和を返します
+/// @tparam T vector<vector<>>の型
+/// @param v 加工前の配列
+/// @return 加工後の配列(長さはそれぞれ+1になります)
+template <typename T>
+inline vector<vector<T>> cumulative(vector<vector<T>> v)
+{
+	assert(v.size() > 0);
+	ll H = v.size(), W = v[0].size();
+	vector<vector<T>> ret(H + 1, vector<T>(W + 1, 0));
+	for (int i = 1; i <= H; i++)
+	{
+		for (int j = 1; j <= W; j++)
+		{
+			ret[i][j] = ret[i][j - 1] + v[i - 1][j - 1];
+		}
+	}
+
+	for (int j = 1; j <= W; j++)
+	{
+		for (int i = 1; i <= H; i++)
+		{
+			ret[i][j] += ret[i - 1][j];
+		}
+	}
+
+	return ret;
+}
+
+/// @brief ランダムな数値を返す
+/// @param l 最小値
+/// @param r 最大値
+/// @return
+inline ll random(ll l, ll r)
+{
+	return l + (rand() % (r - l));
+}
+
 #pragma endregion
 
 /* Variables */
 ll N, M, Q;
-ll ans = 0;
+ll H, W;
+// ll sum = 0, cnt = 0;
+// ll ans = 0;
+// string N;
+// ll ans = INFLL - 1LL;
+// ld ans = 0;
 // bool ans = true;
 // string ans = "";
 // string S = "", T = "";
+string dump = "";
+ll t = -1;
 
 /* Main Function */
 
-int main(int argc, char const *argv[])
+int main()
 {
 	fastio;
 
 	ll S, D;
 	cin >> N >> S >> D;
 
-	rep(_, N)
+	bool flag = false;
+	while (N--)
 	{
 		ll X, Y;
 		cin >> X >> Y;
 
 		if (X < S && Y > D)
 		{
-			co("Yes");
-			exit;
+			flag = true;
+			break;
 		}
 	}
 
-	co("No");
+	YesNo(flag);
 
 	return 0;
 }

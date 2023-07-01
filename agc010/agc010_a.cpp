@@ -1003,15 +1003,19 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	cin >> N;
 
-	rep(i, 4)
+	vll A(N);
+	vcin(A);
+
+	ll cnt = 0;
+	rep(i, N)
 	{
-		cin >> S;
-		dat.erase(S);
+		if (A[i] % 2 == 1)
+			cnt++;
 	}
 
-	YesNo(dat.size() == 0);
+	YESNO(cnt % 2 == 0)
 
 	return 0;
 }

@@ -1003,15 +1003,30 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	cin >> N >> M;
 
-	rep(i, 4)
+	vector<string> C(N), D(M);
+	vll P(M + 1);
+	vcin(C);
+	vcin(D);
+	vcin(P);
+
+	map<string, int> dat;
+	rep(i, M)
 	{
-		cin >> S;
-		dat.erase(S);
+		dat[D[i]] = P[i + 1];
 	}
 
-	YesNo(dat.size() == 0);
+	ll ans = 0;
+	rep(i, N)
+	{
+		if (dat.count(C[i]))
+			ans += dat[C[i]];
+		else
+			ans += P[0];
+	}
+
+	co(ans);
 
 	return 0;
 }

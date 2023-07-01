@@ -1003,15 +1003,17 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	cin >> S;
 
-	rep(i, 4)
+	ll ans = 0;
+	rep(i, S.size())
 	{
-		cin >> S;
-		dat.erase(S);
-	}
+		if (i != S.size() - 1 && S[i] == '0' && S[i + 1] == '0')
+			i++;
 
-	YesNo(dat.size() == 0);
+		ans++;
+	}
+	co(ans);
 
 	return 0;
 }

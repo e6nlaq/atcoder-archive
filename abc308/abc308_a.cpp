@@ -993,7 +993,6 @@ ll H, W;
 // ld ans = 0;
 // bool ans = true;
 // string ans = "";
-string S = "", T = "";
 string dump = "";
 ll t = -1;
 
@@ -1003,15 +1002,22 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	vll S(8);
+	vcin(S);
 
-	rep(i, 4)
+	bool flag = true;
+	rep(i, 8)
 	{
-		cin >> S;
-		dat.erase(S);
+		if (i != 7 && S[i] > S[i + 1])
+			flag = false;
+
+		if (!(S[i] >= 100 && S[i] <= 675))
+			flag = false;
+		if (S[i] % 25 != 0)
+			flag = false;
 	}
 
-	YesNo(dat.size() == 0);
+	YesNo(flag);
 
 	return 0;
 }

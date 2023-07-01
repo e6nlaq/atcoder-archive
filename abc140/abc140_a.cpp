@@ -1003,15 +1003,9 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	cin >> N;
 
-	rep(i, 4)
-	{
-		cin >> S;
-		dat.erase(S);
-	}
-
-	YesNo(dat.size() == 0);
+	co((ll)pow(N, 3));
 
 	return 0;
 }

@@ -1003,15 +1003,25 @@ int main()
 {
 	fastio;
 
-	set<string> dat = {"H", "2B", "3B", "HR"};
+	cin >> N;
 
-	rep(i, 4)
+	vector<pair<ld, ll>> coin(N);
+	rep(i, N)
 	{
-		cin >> S;
-		dat.erase(S);
+		ld A, B;
+		cin >> A >> B;
+
+		coin[i].first = A / (A + B);
+		coin[i].second = 0 - (i + 1);
 	}
 
-	YesNo(dat.size() == 0);
+	sort(rall(coin));
+	rep(i, N)
+	{
+		cout << 0 - coin[i].second << " ";
+	}
+
+	cout << endl;
 
 	return 0;
 }
