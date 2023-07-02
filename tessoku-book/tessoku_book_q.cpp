@@ -1014,7 +1014,7 @@ inline long long count(std::vector<_Tp> v, _Tp x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M, Q;
 ll H, W;
 // ll sum = 0, cnt = 0;
 // ll ans = 0;
@@ -1035,13 +1035,40 @@ int main()
 
 	cin >> N;
 
-	ld ans = 0;
-	for (double i = 1; i <= N; i++)
+	vll A(N, 0), B(N, 0);
+
+	for (int i = 1; i < N; i++)
+		cin >> A[i];
+	for (int i = 2; i < N; i++)
+		cin >> B[i];
+
+	vll dp(N);
+	dp[0] = 0;
+	dp[1] = A[1];
+
+	for (int i = 2; i < N; i++)
 	{
-		ans += (10000 * i) * (1 / N);
+		dp[i] = min(dp[i - 1] + A[i], dp[i - 2] + B[i]);
 	}
 
-	co(ans);
+	vll ans;
+	ll now = N - 1;
+	while (1)
+	{
+		ans.emplace_back(now + 1);
+		if (now == 0)
+			break;
+
+		if (dp[now - 1] + A[now] == dp[now])
+			now--;
+		else
+			now -= 2;
+	}
+
+	reverse(all(ans));
+
+	co(ans.size());
+	print(ans);
 
 	return 0;
 }

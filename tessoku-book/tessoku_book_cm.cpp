@@ -1014,7 +1014,7 @@ inline long long count(std::vector<_Tp> v, _Tp x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ld N, M;
 ll H, W;
 // ll sum = 0, cnt = 0;
 // ll ans = 0;
@@ -1033,15 +1033,59 @@ int main()
 {
 	fastio;
 
-	cin >> N;
+	ll K;
+	cin >> N >> K;
 
-	ld ans = 0;
-	for (double i = 1; i <= N; i++)
+	vll P(floor(N / 2)), Q(ceil(N / 2));
+	vcin(P);
+	vcin(Q);
+
+	vll p(1 << P.size()), q(1 << Q.size());
+	rep(bit_num, 1 << P.size())
 	{
-		ans += (10000 * i) * (1 / N);
+		bitset<25> bit(bit_num);
+		ll sum = 0;
+		rep(i, P.size())
+		{
+			if (bit.test(i))
+				sum += P[i];
+		}
+		p[bit_num] = sum;
+	}
+	rep(bit_num, 1 << Q.size())
+	{
+		bitset<25> bit(bit_num);
+		ll sum = 0;
+		rep(i, Q.size())
+		{
+			if (bit.test(i))
+				sum += Q[i];
+		}
+		q[bit_num] = sum;
 	}
 
-	co(ans);
+	sort(all(p));
+	sort(all(q));
+
+	rep(i, p.size())
+	{
+		if (binary_search(all(q), K - p[i]))
+		{
+			co("Yes");
+			exit;
+		}
+	}
+
+	rep(i, q.size())
+	{
+		if (binary_search(all(p), K - q[i]))
+		{
+			co("Yes");
+			exit;
+		}
+	}
+
+	co("No");
 
 	return 0;
 }

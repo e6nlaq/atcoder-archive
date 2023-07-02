@@ -1014,7 +1014,7 @@ inline long long count(std::vector<_Tp> v, _Tp x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M, Q;
 ll H, W;
 // ll sum = 0, cnt = 0;
 // ll ans = 0;
@@ -1033,15 +1033,10 @@ int main()
 {
 	fastio;
 
-	cin >> N;
+	ld A, B;
+	cin >> A >> B;
 
-	ld ans = 0;
-	for (double i = 1; i <= N; i++)
-	{
-		ans += (10000 * i) * (1 / N);
-	}
-
-	co(ans);
+	co(A * (B / 100));
 
 	return 0;
 }

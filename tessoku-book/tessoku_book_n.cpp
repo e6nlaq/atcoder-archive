@@ -503,19 +503,6 @@ inline void vcin(vector<Tp1> &v)
 	rep(i, v.size()) cin >> v[i];
 }
 
-/// @brief 二つの配列を入力します。
-/// @tparam Tp1 1つめの配列の型
-/// @tparam Tp2 2つめの配列の型
-/// @param v 1つめの配列
-/// @param b 2つめの配列
-/// @throw v.size()!=b.size()の場合に投げられます。
-template <typename Tp1, typename Tp2>
-inline void vcin(vector<Tp1> &v, vector<Tp2> &b)
-{
-	assert(v.size() == b.size());
-	rep(i, v.size()) cin >> v[i] >> b[i];
-}
-
 /// @brief 二次元配列を入力します。
 /// @tparam Tp1 vector<vector<Tp1>>の型
 /// @param v 二次元配列
@@ -1014,7 +1001,7 @@ inline long long count(std::vector<_Tp> v, _Tp x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M;
 ll H, W;
 // ll sum = 0, cnt = 0;
 // ll ans = 0;
@@ -1029,19 +1016,52 @@ ll t = -1;
 
 /* Main Function */
 
+template <typename _Tp>
+inline vector<_Tp> hf_enum(vector<_Tp> a, vector<_Tp> b)
+{
+	vector<_Tp> ret(a.size() * b.size());
+	rep(i, a.size())
+	{
+		rep(j, b.size())
+		{
+			ret[(i * b.size()) + j] = a[i] + b[j];
+		}
+	}
+
+	return ret;
+}
+
 int main()
 {
 	fastio;
 
-	cin >> N;
+	ll K;
+	cin >> N >> K;
 
-	ld ans = 0;
-	for (double i = 1; i <= N; i++)
+	vll A(N), B(N), C(N), D(N);
+	vcin(A);
+	vcin(B);
+	vcin(C);
+	vcin(D);
+
+	debug(A, B, C, D);
+
+	auto P = hf_enum(A, B);
+	auto Q = hf_enum(C, D);
+
+	sort(all(P));
+	sort(all(Q));
+
+	rep(i, P.size())
 	{
-		ans += (10000 * i) * (1 / N);
+		if (binary_search(all(Q), K - P[i]) || binary_search(all(P), K - Q[i]))
+		{
+			co("Yes");
+			exit;
+		}
 	}
 
-	co(ans);
+	co("No");
 
 	return 0;
 }
