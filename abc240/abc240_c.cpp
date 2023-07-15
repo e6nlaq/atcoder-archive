@@ -1026,29 +1026,29 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	ll X;
+	cin >> N >> X;
 
-	unset<pair<ll, ll>> dat;
-	ll x = 0, y = 0;
-	rep(i, N)
+	vector<vector<bool>> dp(N + 1, vector<bool>(X + 1, false));
+	dp[0][0] = true;
+
+	for (int i = 1; i <= N; i++)
 	{
-		dat.emplace(make_pair(x, y));
-
-		char c = S[i];
-		if (c == 'R')
-			x++;
-		elif (c == 'L') x--;
-		elif (c == 'U') y++;
-		else y--;
-
-		if (dat.count(make_pair(x, y)))
+		ll a, b;
+		cin >> a >> b;
+		rep(j, X + 1)
 		{
-			co("Yes");
-			exit;
+			if (dp[i - 1][j])
+			{
+				if (j + a <= X)
+					dp[i][j + a] = true;
+				if (j + b <= X)
+					dp[i][j + b] = true;
+			}
 		}
 	}
 
-	co("No");
+	YesNo(dp[N][X]);
 
 	return 0;
 }

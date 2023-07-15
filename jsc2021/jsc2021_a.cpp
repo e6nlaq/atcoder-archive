@@ -1026,29 +1026,13 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	ld X, Y, Z, ans = 0;
+	cin >> X >> Y >> Z;
 
-	unset<pair<ll, ll>> dat;
-	ll x = 0, y = 0;
-	rep(i, N)
-	{
-		dat.emplace(make_pair(x, y));
+	while (Y / X > ans / Z)
+		ans++;
 
-		char c = S[i];
-		if (c == 'R')
-			x++;
-		elif (c == 'L') x--;
-		elif (c == 'U') y++;
-		else y--;
-
-		if (dat.count(make_pair(x, y)))
-		{
-			co("Yes");
-			exit;
-		}
-	}
-
-	co("No");
+	co(ll(ans - 1));
 
 	return 0;
 }
