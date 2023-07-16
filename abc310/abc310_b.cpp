@@ -991,7 +991,7 @@ inline ll random(ll l, ll r)
 /// @param x 探索するやつ
 /// @return 数
 template <typename _Tp>
-inline long long count(std::vector<_Tp> v, _Tp x)
+inline long long wcount(std::vector<_Tp> v, _Tp x)
 {
 	std::sort(v.begin(), v.end());
 
@@ -1028,31 +1028,54 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	cin >> N >> M;
 
-	bool flag = false;
-	ll ans = -1;
-	ll cnt = 0;
+	vector<ll> P(N), C(N);
+	vector<vector<ll>> F(N, vector<ll>(0));
 	rep(i, N)
 	{
-		if (S[i] == 'o')
-			cnt++;
-		else
-		{
-			flag = true;
-			if (cnt != 0)
-			{
+		cin >> P[i] >> C[i];
 
-				chmax(ans, cnt);
-				cnt = 0;
+		F[i].resize(C[i]);
+		rep(j, C[i])
+		{
+			cin >> F[i][j];
+		}
+	}
+
+	rep(i, N)
+	{
+		rep(j, N)
+		{
+			if (i == j)
+				continue;
+
+			bool flag = true;
+			if (P[i] < P[j])
+				flag = false;
+
+			rep(k, C[i])
+			{
+				if (!wcount(F[j], F[i][k]))
+				{
+					flag = false;
+					break;
+				}
+			}
+
+			bool a = false;
+			if (P[i] > P[j] || F[i].size() < F[j].size())
+				a = true;
+
+			if (flag && a)
+			{
+				co("Yes");
+				exit;
 			}
 		}
 	}
 
-	if (cnt != 0 && flag)
-		chmax(ans, cnt);
-
-	co(ans);
+	co("No");
 
 	return 0;
 }

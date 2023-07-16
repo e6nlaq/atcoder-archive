@@ -1028,31 +1028,14 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	ll P;
+	cin >> N >> P >> Q;
 
-	bool flag = false;
-	ll ans = -1;
-	ll cnt = 0;
-	rep(i, N)
-	{
-		if (S[i] == 'o')
-			cnt++;
-		else
-		{
-			flag = true;
-			if (cnt != 0)
-			{
+	vll D(N);
+	vcin(D);
+	sort(all(D));
 
-				chmax(ans, cnt);
-				cnt = 0;
-			}
-		}
-	}
-
-	if (cnt != 0 && flag)
-		chmax(ans, cnt);
-
-	co(ans);
+	co(min(P, Q + D[0]));
 
 	return 0;
 }

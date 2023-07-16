@@ -1028,31 +1028,33 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	cin >> N;
 
-	bool flag = false;
-	ll ans = -1;
-	ll cnt = 0;
+	set<string> dat;
+	unset<string> deleated;
+
 	rep(i, N)
 	{
-		if (S[i] == 'o')
-			cnt++;
-		else
-		{
-			flag = true;
-			if (cnt != 0)
-			{
+		cin >> S;
+		dat.insert(S);
+	}
 
-				chmax(ans, cnt);
-				cnt = 0;
-			}
+	auto tmp = dat;
+	for (auto x : tmp)
+	{
+		string s = x;
+		reverse(all(s));
+
+		if (!ispalind(s) && dat.count(s) && !deleated.count(x))
+		{
+			dat.erase(s);
+			deleated.insert(s);
 		}
 	}
 
-	if (cnt != 0 && flag)
-		chmax(ans, cnt);
+	debug(dat, deleated);
 
-	co(ans);
+	co(dat.size());
 
 	return 0;
 }

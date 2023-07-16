@@ -1028,31 +1028,33 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	cin >> N >> M;
 
-	bool flag = false;
-	ll ans = -1;
-	ll cnt = 0;
-	rep(i, N)
+	vector<bool> ac(N, false);
+	vector<ll> wa(N, 0);
+
+	ll a = 0, w = 0;
+	rep(i, M)
 	{
-		if (S[i] == 'o')
-			cnt++;
+		ll p;
+		cin >> p >> S;
+
+		if (ac[p - 1])
+			continue;
+
+		if (S == "AC")
+		{
+			ac[p - 1] = true;
+			a++;
+			w += wa[p - 1];
+		}
 		else
 		{
-			flag = true;
-			if (cnt != 0)
-			{
-
-				chmax(ans, cnt);
-				cnt = 0;
-			}
+			wa[p - 1]++;
 		}
 	}
 
-	if (cnt != 0 && flag)
-		chmax(ans, cnt);
-
-	co(ans);
+	cout << a << " " << w << endl;
 
 	return 0;
 }
