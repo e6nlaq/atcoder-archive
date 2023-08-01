@@ -85,7 +85,7 @@ EXTENSIONS = {
     "ReasonML": "re",
     "Mercury": "m",
     "Seed7": "sd7",
-    "Unison": "u"
+    "Unison": "u",
 
     # One-character language
     "C": "c",
