@@ -41,6 +41,7 @@ EXTENSIONS = {
     "Kotlin": "kt",
     "COBOL": "cob",
     "C": ".c",
+    "bc": "bc",
 }
 
 
