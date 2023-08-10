@@ -1041,23 +1041,19 @@ int main()
 {
 	fastio;
 
-	cin >> N >> M;
+	cin >> N;
 
-	vll d(N + 1);
-	rep(i, M)
+	ll ans = 0;
+	for (int i = 1; i <= N; i++)
 	{
-		ll L, R;
-		cin >> L >> R;
+		string s = to_string(i);
+		string o = n_ary(s, 10, 8);
 
-		d[L - 1]++;
-		d[R]--;
+		if (count(all(s), '7') == 0 && count(all(o), '7') == 0)
+			ans++;
 	}
 
-	auto Z = cumulative(d);
-
-	debug(Z);
-
-	co(count(all(Z), M));
+	co(ans);
 
 	return 0;
 }

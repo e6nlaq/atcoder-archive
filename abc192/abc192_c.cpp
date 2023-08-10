@@ -1029,7 +1029,6 @@ inline long long count(std::vector<_Tp> v, _Tp x) noexcept(except)
 #pragma endregion
 
 /* Variables */
-ll N, M, Q;
 ll H, W;
 string S = "", T = "";
 string dump = "";
@@ -1041,23 +1040,29 @@ int main()
 {
 	fastio;
 
-	cin >> N >> M;
+	ll K;
+	string N;
 
-	vll d(N + 1);
-	rep(i, M)
+	cin >> N >> K;
+
+	vs a(K + 1);
+	a[0] = N;
+
+	for (int i = 1; i <= K; i++)
 	{
-		ll L, R;
-		cin >> L >> R;
+		string tmp = a[i - 1];
+		sort(all(a[i - 1]));
+		string mn = a[i - 1];
+		reverse(all(a[i - 1]));
+		string mx = a[i - 1];
+		a[i - 1] = tmp;
 
-		d[L - 1]++;
-		d[R]--;
+		a[i] = to_string(stoi(mx) - stoi(mn));
 	}
 
-	auto Z = cumulative(d);
+	debug(a);
 
-	debug(Z);
-
-	co(count(all(Z), M));
+	co(a.back());
 
 	return 0;
 }
