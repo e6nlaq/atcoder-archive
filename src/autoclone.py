@@ -154,7 +154,8 @@ class AutoClone(object):
 
             if self.ac_only and result == "AC":
                 code = self.get_code(contest_id, submission_id)
-                self.write_code(code, contest_id, problem_id, language)
+                if code != None:
+                    self.write_code(code, contest_id, problem_id, language)
             else:
                 # Accept non-AC reuslt
                 # Currently Unavailable
