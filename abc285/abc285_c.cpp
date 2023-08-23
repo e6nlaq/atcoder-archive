@@ -1038,9 +1038,16 @@ int main()
 {
 	fastio;
 
-	cin >> N >> S;
+	cin >> S;
 
-	co(regex_replace(S, regex("na"), "nya"));
+	ull ans = 0;
+	rep(i, S.size())
+	{
+		ans *= 26;
+		ans += S[i] - 'A' + 1;
+	}
+
+	co(ans);
 
 	return 0;
 }
