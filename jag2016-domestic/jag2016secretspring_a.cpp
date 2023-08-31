@@ -1038,14 +1038,26 @@ int main()
 {
 	fastio;
 
-	cin >> S;
+	cin >> N;
 
-	for (int i = 0; i < S.size(); i += 2)
+	ll cnt = 0;
+	rep(i, N)
 	{
-		swap(S[i], S[i + 1]);
+		cin >> S;
+
+		if (S == "A")
+			cnt++;
+		else
+			cnt--;
+
+		if (cnt < 0)
+		{
+			co("NO");
+			exit;
+		}
 	}
 
-	co(S);
+	YESNO(cnt == 0);
 
 	return 0;
 }
