@@ -20,9 +20,8 @@ import math
 
 
 def main():
-    N: int = int(input())
-    A: list = list(map(int, input().split(" ")))
-    print(sum(A))
+    N = int(input())
+    print(sum(list(map(int, input().split()))))
 
 
 if __name__ == "__main__":

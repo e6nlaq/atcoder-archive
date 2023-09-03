@@ -1,4 +1,4 @@
-/*------------------------------------------------------------
+﻿/*------------------------------------------------------------
 
 
 
@@ -1038,18 +1038,36 @@ int main()
 {
 	fastio;
 
-	cin >> H >> N;
-	ll cnt = 0;
+	cin >> N >> W;
 
+	vector<pair<ll, ll>> c(N);
 	rep(i, N)
 	{
-		ll A;
-		cin >> A;
+		ll A, B;
+		cin >> A >> B;
 
-		cnt += A;
+		c[i] = {A, B};
 	}
 
-	YesNo(cnt >= H);
+	sort(c.rbegin(), c.rend());
+
+	ll ans = 0, w = 0;
+	rep(i, N)
+	{
+		if (c[i].second + w > W)
+		{
+			ans += c[i].first * (W - w);
+			w = W;
+			break;
+		}
+		else
+		{
+			ans += c[i].first * c[i].second;
+			w += c[i].second;
+		}
+	}
+
+	co(ans);
 
 	return 0;
 }

@@ -1038,18 +1038,23 @@ int main()
 {
 	fastio;
 
-	cin >> H >> N;
-	ll cnt = 0;
+	cin >> N;
+	vll d(N);
 
+	vcin(d);
+	ll ans = 0;
 	rep(i, N)
 	{
-		ll A;
-		cin >> A;
+		rep(j, N)
+		{
+			if (i == j)
+				continue;
 
-		cnt += A;
+			ans += d[i] * d[j];
+		}
 	}
 
-	YesNo(cnt >= H);
+	co(ans / 2);
 
 	return 0;
 }

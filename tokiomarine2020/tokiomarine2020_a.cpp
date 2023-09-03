@@ -1,10 +1,10 @@
-﻿/*---------------------------------------------------
+/*------------------------------------------------------------
 
 
 
 	   Welcome to my program!
 
-	　　∧＿∧        @x__0
+	　　∧＿∧        AtCoder / Codeforces
 	　 ( 　･ω･)
 	＿(__つ/￣￣￣ /  MIT License
 	　　＼/　　　　 /  C++ GCC 11.3.0 + Boost 1.82.0
@@ -12,7 +12,7 @@
 		   Let's write Code!
 
 
----------------------------------------------------*/
+------------------------------------------------------------*/
 
 // Return Code 139(out_of_range)が出たら試す
 // #define _GLIBCXX_DEBUG
@@ -41,17 +41,21 @@
 // namespace ag = boost::algorithm;
 
 // AtCoder Library
-// #include <atcoder/all>
-// using namespace atcoder;
+/*
+#include <atcoder/all>
+using namespace atcoder;
+//*/
 
 #pragma region AtCoder Template
 
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifdef _LOCAL_
+// ローカル環境チェック
+#if __has_include("./lib/debug_print.hpp")
 #include "./lib/debug_print.hpp"
 #define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
+#define _LOCAL_ 1
 #else
 #define debug(...) (static_cast<void>(0))
 #endif
@@ -69,7 +73,6 @@ using namespace std;
 	srand((unsigned)time(NULL));
 
 // 型省略
-#define var auto
 using uint = unsigned;
 using ll = long long;
 // using ll = __int128_t;
@@ -118,8 +121,15 @@ using qi = queue<int>;
 using qd = queue<ld>;
 using qs = queue<string>;
 using qc = queue<char>;
-#define unmap unordered_map
-#define unset unordered_set
+
+template <typename Tp1, typename Tp2>
+using unmap = unordered_map<Tp1, Tp2>;
+
+template <typename Tp>
+using unset = unordered_set<Tp>;
+
+template <typename Tp>
+using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
 
 // マクロ
 #define rep(i, n) for (ull i = 0; i < (ull)(n); i++)
@@ -214,6 +224,10 @@ const ll j2_m32 = pow(2, -32);
 const ll j2_10 = pow(2, 10);
 const vector<int> dx = {0, 0, 1, -1};
 const vector<int> dy = {1, -1, 0, 0};
+const vector<int> ex = {-1, -1, -1, 0, 0, 1, 1, 1};
+const vector<int> ey = {-1, 0, 1, -1, 1, -1, 0, 1};
+const string spa = " ";
+const bool except = true;
 
 // 色々なテンプレ(完全コピペ)
 
@@ -297,7 +311,7 @@ operator*(std::string const &str, int n)
  * @param num 判定する数値
  * @return bool 素数かどうか
  */
-inline bool isprime(const int num)
+inline bool isprime(const int num) noexcept(except)
 {
 	if (num < 2)
 		return false;
@@ -323,7 +337,7 @@ inline bool isprime(const int num)
  * @param x 判定する数値です
  * @return bool 偶数かどうか
  */
-inline bool iseven(const int x)
+inline bool iseven(const int x) noexcept(except)
 {
 	if (x % 2 == 0)
 		return true;
@@ -336,7 +350,7 @@ inline bool iseven(const int x)
  * @param x 判定する数値です
  * @return bool 奇数かどうか
  */
-inline bool isodd(const int x)
+inline bool isodd(const int x) noexcept(except)
 {
 	if (x % 2 != 0)
 		return true;
@@ -349,7 +363,7 @@ inline bool isodd(const int x)
  * @param c 変換する文字
  * @return int 変換した数値
  */
-inline int ctoi(const char c)
+inline int ctoi(const char c) noexcept(except)
 {
 	if (c >= '0' && c <= '9')
 		return c - '0';
@@ -362,7 +376,7 @@ inline int ctoi(const char c)
  * @param n
  * @return int
  */
-inline int minisum(const int n)
+inline int minisum(const int n) noexcept(except)
 {
 	return n * (n + 1) / 2;
 }
@@ -372,7 +386,7 @@ inline int minisum(const int n)
  *
  * @param b 反転する変数
  */
-inline void flip(bool &b)
+inline void flip(bool &b) noexcept(except)
 {
 	b = !b;
 }
@@ -386,7 +400,7 @@ inline void flip(bool &b)
  * @return string 0埋め後の文字列
  */
 template <typename T>
-inline string zerou(const T i, string s)
+inline string zerou(const T i, string s) noexcept(except)
 {
 	while (s.size() != i)
 		s = '0' + s;
@@ -401,7 +415,7 @@ inline string zerou(const T i, string s)
  * @return char 変換後の文字
  */
 template <typename T>
-inline char to_char(const T i)
+inline char to_char(const T i) noexcept(except)
 {
 	return '0' + i;
 }
@@ -416,7 +430,7 @@ inline char to_char(const T i)
  * @return bool 置き換えたかどうか
  */
 template <typename T1_, typename T2_>
-inline bool chmax(T1_ &i, const T2_ j)
+inline bool chmax(T1_ &i, const T2_ j) noexcept(except)
 {
 	if (i < j)
 	{
@@ -436,7 +450,7 @@ inline bool chmax(T1_ &i, const T2_ j)
  * @return bool 置き換えたかどうか
  */
 template <typename T1_, typename T2_>
-inline bool chmin(T1_ &i, const T2_ j)
+inline bool chmin(T1_ &i, const T2_ j) noexcept(except)
 {
 	if (i > j)
 	{
@@ -453,7 +467,7 @@ inline bool chmin(T1_ &i, const T2_ j)
  * @return string 2進数に変換した文字。
  * @author https://onl.bz/WdFt4ei
  */
-inline string tobinary(int n)
+inline string tobinary(int n) noexcept(except)
 {
 	string r;
 	while (n != 0)
@@ -473,7 +487,7 @@ inline string tobinary(int n)
  * @author https://zenn.dev/antyuntyun
  */
 template <typename T>
-inline void print(const vector<T> &v, string s = " ")
+inline void print(const vector<T> &v, string s = " ") noexcept(except)
 {
 	rep(i, v.size()) cout << v[i] << (i != (ll)v.size() - 1 ? s : "\n");
 }
@@ -483,7 +497,7 @@ inline void print(const vector<T> &v, string s = " ")
 /// @param v 二次元配列
 /// @param s 区切り文字
 template <typename T>
-inline void print(const vector<vector<T>> &v, string s = " ")
+inline void print(const vector<vector<T>> &v, string s = " ") noexcept(except)
 {
 	rep(i, v.size())
 	{
@@ -498,7 +512,7 @@ inline void print(const vector<vector<T>> &v, string s = " ")
  * @param v 入力する配列
  */
 template <typename Tp1>
-inline void vcin(vector<Tp1> &v)
+inline void vcin(vector<Tp1> &v) noexcept(except)
 {
 	rep(i, v.size()) cin >> v[i];
 }
@@ -520,7 +534,7 @@ inline void vcin(vector<Tp1> &v, vector<Tp2> &b)
 /// @tparam Tp1 vector<vector<Tp1>>の型
 /// @param v 二次元配列
 template <typename Tp1>
-inline void vcin(vector<vector<Tp1>> &v)
+inline void vcin(vector<vector<Tp1>> &v) noexcept(except)
 {
 	rep(i, v.size())
 	{
@@ -537,7 +551,7 @@ inline void vcin(vector<vector<Tp1>> &v)
  * @param s 反転する文字列
  * @return string 反転後の文字列
  */
-inline string srev(string s)
+inline string srev(string s) noexcept(except)
 {
 	reverse(all(s));
 	return s;
@@ -547,7 +561,7 @@ inline string srev(string s)
 /// @param x x^nのx
 /// @param n x^nのn
 /// @return x^n
-inline long long pow_ll(long long x, long long n)
+inline long long pow_ll(long long x, long long n) noexcept(except)
 {
 	long long ret = x;
 	if (n == 0)
@@ -737,7 +751,7 @@ inline string n_ary(string str, int n, int m)
 	unsigned long tmp = 0;
 	string ret;
 
-	for (int i = 0; i < str.length(); i++)
+	for (unsigned long long i = 0; i < str.length(); i++)
 	{
 		tmp += (unsigned long)ntodec(str[str.length() - 1 - i]) * pow_ll(n, i);
 	}
@@ -855,7 +869,7 @@ inline vector<vector<T>> rot90(vector<vector<T>> A)
 /// @brief 回文かどうか判定
 /// @param str 文字列
 /// @return 回文かどうか
-inline bool ispalind(const string str)
+inline bool ispalind(const string str) noexcept(except)
 {
 	int n = str.length();
 	for (int i = 0; i < n / 2; i++)
@@ -888,7 +902,7 @@ inline vector<ll> range(ll n, ll start = 0)
 /// @brief 10進法で表した時の各桁の和を求めます
 /// @param s 10進法で表した文字列
 /// @return 各桁の和
-inline ll csum(string s)
+inline ll csum(string s) noexcept(except)
 {
 	ll ret = 0;
 	rep(i, s.size())
@@ -902,7 +916,7 @@ inline ll csum(string s)
 /// @brief csumの数値用の補完関数
 /// @param n 数値
 /// @return 各桁の和
-inline ll csum(ll n)
+inline ll csum(ll n) noexcept(except)
 {
 	return csum(to_string(n));
 }
@@ -910,7 +924,7 @@ inline ll csum(ll n)
 /// @brief 階乗を計算する
 /// @param n nの階乗
 /// @return nの階乗
-inline ll fact(ll n)
+inline ll fact(ll n) noexcept(except)
 {
 	ll ret = 1;
 	rep(i, n)
@@ -923,7 +937,7 @@ inline ll fact(ll n)
 /// @brief 平方数かどうかを判定
 /// @param N 判定する数
 /// @return 平方数かどうか
-inline bool is_squere(long long N)
+inline bool is_squere(long long N) noexcept(except)
 {
 	long long r = (long long)floor(sqrt((long double)N)); // 切り捨てした平方根
 	return (r * r) == N;
@@ -934,7 +948,7 @@ inline bool is_squere(long long N)
 /// @param v 加工する前の配列
 /// @return 加工後の配列(長さは |v|+1 となります。)
 template <typename T>
-inline vector<T> cumulative(vector<T> v)
+inline vector<T> cumulative(vector<T> v) noexcept(except)
 {
 	vector<T> cum(v.size() + 1);
 	cum[0] = 0;
@@ -978,7 +992,7 @@ inline vector<vector<T>> cumulative(vector<vector<T>> v)
 /// @param l 最小値
 /// @param r 最大値
 /// @return
-inline ll random(ll l, ll r)
+inline ll random(ll l, ll r) noexcept(except)
 {
 	return l + (rand() % (r - l));
 }
@@ -989,10 +1003,8 @@ inline ll random(ll l, ll r)
 /// @param x 探索するやつ
 /// @return 数
 template <typename _Tp>
-inline long long count(std::vector<_Tp> v, _Tp x)
+inline long long count(std::vector<_Tp> v, _Tp x) noexcept(except)
 {
-	std::sort(v.begin(), v.end());
-
 	auto l = std::lower_bound(v.begin(), v.end(), x);
 	auto u = std::upper_bound(v.begin(), v.end(), x);
 
@@ -1016,13 +1028,6 @@ inline long long count(std::vector<_Tp> v, _Tp x)
 /* Variables */
 ll N, M, Q;
 ll H, W;
-// ll sum = 0, cnt = 0;
-// ll ans = 0;
-// string N;
-// ll ans = INFLL - 1LL;
-// ld ans = 0;
-// bool ans = true;
-// string ans = "";
 string S = "", T = "";
 string dump = "";
 ll t = -1;

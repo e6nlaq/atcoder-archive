@@ -1038,18 +1038,20 @@ int main()
 {
 	fastio;
 
-	cin >> H >> N;
-	ll cnt = 0;
+	cin >> N;
+	vll H(N);
+	vcin(H);
 
+	pair<ll, ll> ans = {-1, -1};
 	rep(i, N)
 	{
-		ll A;
-		cin >> A;
-
-		cnt += A;
+		if (chmax(ans.first, H[i]))
+		{
+			ans.second = i + 1;
+		}
 	}
 
-	YesNo(cnt >= H);
+	co(ans.second);
 
 	return 0;
 }

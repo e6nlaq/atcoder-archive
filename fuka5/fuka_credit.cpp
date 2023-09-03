@@ -1038,18 +1038,27 @@ int main()
 {
 	fastio;
 
-	cin >> H >> N;
-	ll cnt = 0;
-
-	rep(i, N)
+	while (true)
 	{
-		ll A;
-		cin >> A;
+		ll n, k;
+		cin >> n >> k;
 
-		cnt += A;
+		if (n == 0 && k == 0)
+			break;
+
+		vll x(n);
+		vcin(x);
+
+		sort(all(x));
+
+		ll ans = 0;
+		rep(i, k)
+		{
+			ans += x[i];
+		}
+
+		cout << ans << endl;
 	}
-
-	YesNo(cnt >= H);
 
 	return 0;
 }

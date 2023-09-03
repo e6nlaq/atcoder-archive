@@ -1038,18 +1038,42 @@ int main()
 {
 	fastio;
 
-	cin >> H >> N;
-	ll cnt = 0;
+	ll K;
+	cin >> N >> M >> H >> K >> S;
 
-	rep(i, N)
+	unset<pair<ll, ll>> dat;
+	rep(i, M)
 	{
-		ll A;
-		cin >> A;
+		ll x, y;
+		cin >> x >> y;
 
-		cnt += A;
+		dat.emplace(make_pair(x, y));
 	}
 
-	YesNo(cnt >= H);
+	ll x = 0, y = 0;
+	rep(i, N)
+	{
+		if (S[i] == 'U')
+			y++;
+		elif (S[i] == 'L') x--;
+		elif (S[i] == 'R') x++;
+		else y--;
+
+		H--;
+
+		if (H < 0)
+		{
+			co("No");
+			exit;
+		}
+		if (dat.count(make_pair(x, y)) && H < K)
+		{
+			H = K;
+			dat.erase(make_pair(x, y));
+		}
+	}
+
+	co("Yes");
 
 	return 0;
 }
