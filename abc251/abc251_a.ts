@@ -7,7 +7,7 @@
 	  ∧＿∧        AtCoder / Codeforces
 	 ( 　･ω･)
 	＿(__つ/￣￣￣ /  MIT License
-	  ＼/　　　　 /   TypeScript 5.2.2 + Node.js v18.17.1
+	  ＼/　　　　 /   TypeScript 5.2.2 + Node.js v18.18.0
 		￣￣￣￣￣
 		   Let's write Code!
 
@@ -31,11 +31,11 @@ let S: string = "";
 // Functions
 
 function inputs(inp: Array<Array<string>>): void {
-	N = Number(inp[0][0]);
+	S = inp[0][0];
 }
 
 function main(): void {
-	console.log(2 ** N);
+	console.log(S.repeat(6 / S.length));
 }
 
 // #region 入力
