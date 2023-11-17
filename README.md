@@ -1,4 +1,5 @@
 # AtCoder Archive
 私のAtCoderのアーカイブです。
 
-![GitHub repo size](https://img.shields.io/github/repo-size/e6nlaq/atcoder-archive?label=Repo%20Size)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/e6nlaq/atcoder-archive)
+
