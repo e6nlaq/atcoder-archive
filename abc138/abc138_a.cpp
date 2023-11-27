@@ -1036,14 +1036,14 @@ int main()
 {
 	fastio;
 
-	ll K;
-	cin >> K;
+	ll a;
+	string s;
+	cin >> a >> s;
 
-	rep(i, K)
-	{
-		cout << (char)('A' + i);
-	}
-	cout << endl;
+	if (a >= 3200)
+		co(s);
+	else
+		co("red");
 
 	return 0;
 }

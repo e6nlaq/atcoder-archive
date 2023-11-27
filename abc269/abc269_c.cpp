@@ -1036,14 +1036,33 @@ int main()
 {
 	fastio;
 
-	ll K;
-	cin >> K;
+	cin >> N;
 
-	rep(i, K)
+	auto tmp = n_ary(to_string(N), 10, 2);
+	vector<ll> dat;
+	for (int i = tmp.size() - 1; i >= 0; --i)
 	{
-		cout << (char)('A' + i);
+		if (tmp[i] == '1')
+			dat.emplace_back(tmp.size() - 1 - i);
 	}
-	cout << endl;
+
+	debug(dat);
+
+	rep(bit_num, 1 << dat.size())
+	{
+		bitset<15> bit(bit_num);
+		ull ans = 0, mae = 0;
+		rep(i, dat.size())
+		{
+			if (bit.test(i))
+			{
+				ans <<= mae;
+				ans |= ull(ull(1) << dat[i]);
+			}
+		}
+
+		co(ans);
+	}
 
 	return 0;
 }
