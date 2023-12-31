@@ -1038,14 +1038,44 @@ int main()
 {
 	fastio;
 
-	ll a, b;
+	cin >> N;
 
-	cin >> a >> b;
+	stack<pair<ll, pair<ll, ll>>> dat;
+	pair<ll, ll> pre = {-1, -2};
+	rep(i, N)
+	{
+		ll a;
+		cin >> a;
 
-	if (a != 9 && b == 10)
-		b = 0;
+		bool push = true;
+		if (pre.first == a)
+		{
+			pre.second++;
+			if (pre.second == a)
+			{
+				debug(a - 1, dat);
+				push = false;
+				rep(j, a - 1)
+				{
+					dat.pop();
+				}
 
-	YesNo(a - 1 == b || a + 1 == b);
+				if (!dat.empty())
+					pre = dat.top().second;
+				else
+					pre = {-1, -7};
+			}
+		}
+		else
+		{
+			pre = {a, 1};
+		}
+
+		if (push)
+			dat.push({a, pre});
+		debug(i, pre, dat);
+		co(dat.size());
+	}
 
 	return 0;
 }

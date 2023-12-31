@@ -1,13 +1,13 @@
 /*------------------------------------------------------------
 
 
-
 	   Welcome to my program!
+	   DON'T HACK PLEASE!!!!!!!!
 
-	　　∧＿∧        AtCoder / Codeforces
+	　　∧＿∧        AtCoder / Codeforces / yukicoder
 	　 ( 　･ω･)
 	＿(__つ/￣￣￣ /  MIT License
-	　　＼/　　　　 /  C++ GCC 11.3.0 + Boost 1.82.0
+	　　＼/　　　　 /  C++ GCC 11.4.0 + Boost 1.82.0
 	　　　　￣￣￣￣￣
 		   Let's write Code!
 
@@ -18,7 +18,7 @@
 // #define _GLIBCXX_DEBUG
 
 // Boost系
-// #include <boost/multiprecision/cpp_int.hpp>			 // クソでか整数
+// #include <boost/multiprecision/cpp_int.hpp> 			 // クソでか整数
 // #include <boost/multiprecision/cpp_dec_float.hpp>	 // クソでか小数
 // #include <boost/math/constants/constants.hpp>		 // ウルトラ円周率
 // #include <boost/date_time/gregorian/gregorian.hpp>	 // 申し訳程度の日付演算
@@ -35,10 +35,6 @@
 // #include <boost/range/algorithm/for_each.hpp>		 // 関数でforeach文
 
 // #include <boost/assert.hpp> // 上位デバッグ
-
-// Boost名前空間省略
-// namespace mu = boost::multiprecision;
-// namespace ag = boost::algorithm;
 
 #pragma region AtCoder Template
 
@@ -58,6 +54,10 @@ using namespace std;
 #if defined(LOCAL) || defined(ATCODER)
 #include <atcoder/all>
 using namespace atcoder;
+#endif
+
+#ifdef BOOST_MP_CPP_INT_HPP
+namespace mu = boost::multiprecision;
 #endif
 
 // 高速化
@@ -132,7 +132,7 @@ template <typename Tp>
 using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
 
 // マクロ
-#define rep(i, n) for (ull i = 0; i < (ull)(n); i++)
+#define rep(i, n) for (ll i = 0; i < (ll)(n); i++)
 #define rrep(i, n) for (ll i = (n)-1; i >= 0; i--)
 #define irep(i, n) for (ll i = 1; i <= (ll)(n); i++)
 #define arep(i, a, n) for (ll i = (a); i < (ll)(n); i++)
@@ -482,10 +482,12 @@ inline void print(const vector<vector<T>> &v, string s = " ") noexcept(except)
  *
  * @tparam Tp1 配列の型
  * @param v 入力する配列
+ * @throw 配列の長さが0の場合に投げる
  */
 template <typename Tp1>
-inline void vcin(vector<Tp1> &v) noexcept(except)
+inline void vcin(vector<Tp1> &v)
 {
+	assert(v.size() != 0);
 	rep(i, v.size()) cin >> v[i];
 }
 
@@ -533,12 +535,12 @@ inline string srev(string s) noexcept(except)
 /// @param x x^nのx
 /// @param n x^nのn
 /// @return x^n
-inline long long pow_ll(long long x, long long n) noexcept(except)
+inline unsigned long long pow_ll(unsigned long long x, unsigned long long n) noexcept(except)
 {
-	long long ret = x;
+	unsigned long long ret = x;
 	if (n == 0)
 		return 1;
-	for (long long i = 1; i < n; i++)
+	for (unsigned long long i = 1; i < n; i++)
 	{
 		ret *= x;
 	}
@@ -799,7 +801,7 @@ inline vll divisor(ll n)
 /// @brief 文字列が数字のみか判定します O(|S|)
 /// @param s 判定する文字列
 /// @return 数値でできた文字列かどうか
-inline bool isint(string s)
+inline bool isint(string s) noexcept(except)
 {
 	rep(i, s.size())
 	{
@@ -1039,24 +1041,23 @@ int main()
 	ll A, B;
 	cin >> N >> A >> B;
 
-	bool black = false;
 	rep(i, N)
 	{
-		rep(j, A)
+		bool white = i % 2 == 0;
+		string line = "";
+		rep(j, N)
 		{
-			rep(k, N)
+			rep(k, B)
 			{
-				rep(l, B)
-				{
-					if (k % 2 == (int)(black))
-						cout << ".";
-					else
-						cout << "#";
-				}
+				line += (white ? '.' : '#');
 			}
-			cout << endl;
+			white = !white;
 		}
-		black = !black;
+
+		rep(k, A)
+		{
+			co(line);
+		}
 	}
 
 	return 0;

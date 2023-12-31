@@ -1038,14 +1038,38 @@ int main()
 {
 	fastio;
 
-	ll a, b;
+	cin >> N;
 
-	cin >> a >> b;
+	vll com(4, 0);
 
-	if (a != 9 && b == 10)
-		b = 0;
+	ll P = 0;
 
-	YesNo(a - 1 == b || a + 1 == b);
+	rep(i, N)
+	{
+		ll A;
+		cin >> A;
+
+		vll to(4, 0);
+		com[0] = 1;
+
+		rep(j, 4)
+		{
+			if (j + A >= 4)
+			{
+				P += com[j];
+			}
+			else
+			{
+				to[j + A] = com[j];
+			}
+		}
+
+		debug(to);
+
+		com = to;
+	}
+
+	co(P);
 
 	return 0;
 }
