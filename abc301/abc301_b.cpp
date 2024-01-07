@@ -1026,7 +1026,7 @@ inline T recent(vector<T> v, T x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M, Q;
 ll H, W;
 string S = "", T = "";
 string dump = "";
@@ -1040,9 +1040,43 @@ int main()
 
 	cin >> N;
 
-	ld tmp = round(N / 5);
+	vll A(N);
+	vcin(A);
 
-	co((ll)(5 * tmp));
+	rep(i, N)
+	{
+		if (i == 0)
+		{
+			cout << A[0];
+		}
+		else
+		{
+			if (abs(A[i] - A[i - 1]) != 1)
+			{
+				if (A[i] > A[i - 1])
+				{
+					for (int j = A[i - 1] + 1; j <= A[i]; ++j)
+					{
+						cout << j << (j != A[i] ? spa : "");
+					}
+				}
+				else
+				{
+					for (int j = A[i - 1] - 1; j >= A[i]; --j)
+					{
+						cout << j << (j != A[i] ? spa : "");
+					}
+				}
+			}
+
+			else
+			{
+				cout << A[i];
+			}
+		}
+
+		cout << (i != N - 1 ? spa : "\n");
+	}
 
 	return 0;
 }

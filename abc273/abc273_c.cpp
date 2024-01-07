@@ -1026,7 +1026,7 @@ inline T recent(vector<T> v, T x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M, Q;
 ll H, W;
 string S = "", T = "";
 string dump = "";
@@ -1040,9 +1040,31 @@ int main()
 
 	cin >> N;
 
-	ld tmp = round(N / 5);
+	vll A(N);
+	unset<ll> dat;
+	vll tmp;
+	rep(i, N)
+	{
+		cin >> A[i];
 
-	co((ll)(5 * tmp));
+		if (!dat.contains(A[i]))
+		{
+			dat.emplace(A[i]);
+			tmp.emplace_back(A[i]);
+		}
+	}
+
+	sort(all(tmp));
+
+	vll ans(N, 0);
+
+	rep(i, N)
+	{
+		auto it = upper_bound(all(tmp), A[i]);
+		ans[tmp.end() - it]++;
+	}
+
+	print(ans, "\n");
 
 	return 0;
 }

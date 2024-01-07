@@ -1026,7 +1026,7 @@ inline T recent(vector<T> v, T x)
 #pragma endregion
 
 /* Variables */
-ld N, M, Q;
+ll N, M, Q;
 ll H, W;
 string S = "", T = "";
 string dump = "";
@@ -1038,11 +1038,16 @@ int main()
 {
 	fastio;
 
-	cin >> N;
+	ll y, m, d;
+	cin >> y >> m >> d;
 
-	ld tmp = round(N / 5);
+	if (m <= 2)
+	{
+		m += 12;
+		y--;
+	}
 
-	co((ll)(5 * tmp));
+	co(735369 - ((365 * y) + (y / 4) - (y / 100) + (y / 400) + ((306 * (m + 1)) / 10) + d - 429));
 
 	return 0;
 }
