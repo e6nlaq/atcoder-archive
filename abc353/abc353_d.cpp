@@ -1066,23 +1066,54 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+using mint = modint998244353;
+
 int main()
 {
 	fastio;
 
 	cin >> N;
-	vll A(N);
+
+	vector<ull> A(N);
 	cin >> A;
 
-	// Aの値が全て等しいならYesを出力
-	if (count(all(A), A[0]) == N)
+	auto Z = cumulative(A);
+
+	vector<ull> pows(15);
+	pows[0] = 10;
+	for (ll i = 1; i <= 12; ++i)
 	{
-		cout << "Yes" << endl;
-		return 0;
+		pows[i] = pow_ll(10, i + 1);
+	}
+	debug(pows);
+
+	// 位
+	vector<ull> dat(11, 0);
+	rep(i, N)
+	{
+		dat[to_string(A[i]).size() - 1]++;
 	}
 
-	// Aの値が全て等しくないならNoを出力
-	cout << "No" << endl;
+	debug(dat);
+
+	modint998244353 ans;
+	rep(i, N)
+	{
+		dat[to_string(A[i]).size() - 1]--;
+		for (ll j = 0; j <= 10; ++j)
+		{
+			// 10^j
+			mint tmp = A[i];
+			tmp *= pows[j];
+			tmp *= dat[j];
+			ans += tmp;
+		}
+
+		ans += (mint)Z[N] - (mint)Z[i + 1];
+		// debug(Z[N] - Z[i + 1]);
+	}
+
+	co(ans.val());
 
 	return 0;
 }
