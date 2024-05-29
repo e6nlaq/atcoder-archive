@@ -152,7 +152,7 @@ class AutoClone(object):
             submission_id = record["id"]
             result = record["result"]
 
-            if self.ac_only and result == "AC":
+            if self.ac_only and result == "AC" and subbmission_id not in [53949569]:
                 code = self.get_code(contest_id, submission_id)
                 if code != None:
                     self.write_code(code, contest_id, problem_id, language)
