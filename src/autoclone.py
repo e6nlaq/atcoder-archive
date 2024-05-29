@@ -188,6 +188,7 @@ class AutoClone(object):
         submission_url = (
             f"https://atcoder.jp/contests/{contest_id}/submissions/{submission_id}"
         )
+        print(submission_url)
         return BeautifulSoup(
             requests.get(submission_url).content, "html.parser"
         ).pre.string
