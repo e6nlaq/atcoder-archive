@@ -1,15 +1,15 @@
 /*------------------------------------------------------------
 
 
-	   Welcome to my program!
-	   DON'T HACK PLEASE!!!!!!!!
+		   Welcome to my program!
+		   DON'T HACK PLEASE!!!!!!!!
 
-	　　∧＿∧        AtCoder / Codeforces / yukicoder
-	　 ( 　･ω･)
-	＿(__つ/￣￣￣ /  MIT License
-	　　＼/　　　　 /  C++ GCC 11.4.0 + Boost 1.82.0
-	　　　　￣￣￣￣￣
-		   Let's write Code!
+		　　∧＿∧        AtCoder / Codeforces / yukicoder
+		　 ( 　･ω･)
+		＿(__つ/￣￣￣ /
+		　　＼/　　　　 /  C++ GCC 12.3.0 + Boost 1.82.0
+		　　　　￣￣￣￣￣
+				   Let's write Code!
 
 
 ------------------------------------------------------------*/
@@ -43,17 +43,20 @@ using namespace std;
 
 // ローカル環境チェック
 #if __has_include("./lib/debug_print.hpp")
-#include "./lib/debug_print.hpp"
-#define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
 #define LOCAL 1
-#else
-#define debug(...) (static_cast<void>(0))
 #endif
 
 // AC Library(C++17では使えないので注意)
 #if defined(LOCAL) || defined(ATCODER)
 #include <atcoder/all>
 using namespace atcoder;
+#endif
+
+#ifdef LOCAL
+#include "./lib/debug_print.hpp"
+#define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
+#else
+#define debug(...) (static_cast<void>(0))
 #endif
 
 #ifdef BOOST_MP_CPP_INT_HPP
@@ -77,50 +80,37 @@ using uint = unsigned;
 using ll = long long;
 // using ll = __int128_t;
 using ull = unsigned long long;
-using li = long int;
 using ld = long double;
-using str = string;
-using vi = vector<int>;
-using vl = vector<long>;
+using pll = pair<ll, ll>;
 using vll = vector<ll>;
 using vb = vector<bool>;
 using vc = vector<char>;
 using vs = vector<string>;
 using vd = vector<double>;
 using vld = vector<ld>;
-using pii = pair<int, int>;
-using pll = pair<ll, ll>;
+using vull = vector<ull>;
+using vpll = vector<pll>;
 using pdd = pair<ld, ld>;
-using psi = pair<string, int>;
 using psl = pair<string, ll>;
-using pci = pair<char, int>;
 using pcl = pair<char, ll>;
-using vvi = vector<vi>;
 using vvll = vector<vll>;
 using vvc = vector<vc>;
 using vvs = vector<vs>;
 using vvb = vector<vb>;
 using vvld = vector<vld>;
-using vpii = vector<pii>;
-using vpsi = vector<psi>;
-using vpci = vector<pci>;
 using vvd = vector<vd>;
-using mci = map<char, int>;
-using mii = map<int, int>;
 using mll = map<ll, ll>;
 using mcl = map<char, ll>;
-using msi = map<string, int>;
 using msl = map<string, ll>;
-using msvi = map<string, vi>;
 using sll = set<ll>;
 using spll = set<pair<ll, ll>>;
 using spdd = set<pair<ld, ld>>;
 using stll = stack<ll>;
 using qll = queue<ll>;
-using qi = queue<int>;
 using qd = queue<ld>;
 using qs = queue<string>;
 using qc = queue<char>;
+using int128_t = __int128_t;
 
 template <typename Tp1, typename Tp2>
 using unmap = unordered_map<Tp1, Tp2>;
@@ -133,11 +123,11 @@ using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
 
 // マクロ
 #define rep(i, n) for (ll i = 0; i < (ll)(n); i++)
-#define rrep(i, n) for (ll i = (n)-1; i >= 0; i--)
+#define rrep(i, n) for (ll i = (n) - 1; i >= 0; i--)
 #define irep(i, n) for (ll i = 1; i <= (ll)(n); i++)
 #define arep(i, a, n) for (ll i = (a); i < (ll)(n); i++)
 #define adrep(i, a, d, n) for (ll i = (a); i < (ll)(n); i += d)
-#define until(b) while (!(b)) // なにがrwhileだ!untilだぞ!
+#define until(b) while (!(b))
 
 // 省略define
 #define all(x) (x).begin(), (x).end()
@@ -146,67 +136,40 @@ using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
 #define se second
 #define endl "\n"
 #define br break
-#define is ==
 #define el else
 #define elif else if
-#define YESNO(bool)            \
-	if (bool)                  \
-	{                          \
-		cout << "YES" << endl; \
-	}                          \
-	else                       \
-	{                          \
-		cout << "NO" << endl;  \
+
+template <typename T>
+inline void YESNO(T b)
+{
+	cout << (b ? "YES" : "NO") << endl;
+}
+
+template <typename T>
+inline void yesno(T b)
+{
+	cout << (b ? "yes" : "no") << endl;
+}
+
+template <typename T>
+inline void YesNo(T b)
+{
+	cout << (b ? "Yes" : "No") << endl;
+}
+
+template <typename T, typename tr, typename fal>
+inline void outif(T b, tr tru, fal fals)
+{
+	if (b)
+	{
+		cout << tru << endl;
 	}
-#define yesno(bool)            \
-	if (bool)                  \
-	{                          \
-		cout << "yes" << endl; \
-	}                          \
-	else                       \
-	{                          \
-		cout << "no" << endl;  \
+	else
+	{
+		cout << fals << endl;
 	}
-#define YesNo(bool)            \
-	if (bool)                  \
-	{                          \
-		cout << "Yes" << endl; \
-	}                          \
-	else                       \
-	{                          \
-		cout << "No" << endl;  \
-	}
-#define Yaybad(bool)            \
-	if (bool)                   \
-	{                           \
-		cout << "Yay!" << endl; \
-	}                           \
-	else                        \
-	{                           \
-		cout << ":(" << endl;   \
-	}
-#define GoodBd(bool)            \
-	if (bool)                   \
-	{                           \
-		cout << "Good" << endl; \
-	}                           \
-	else                        \
-	{                           \
-		cout << "Bad" << endl;  \
-	}
-#define ACWA(bool)            \
-	if (bool)                 \
-	{                         \
-		cout << "AC" << endl; \
-	}                         \
-	else                      \
-	{                         \
-		cout << "WA" << endl; \
-	}
-#define pb push_back
-#define mp make_pair
-#define tos to_string
-#define sz size()
+}
+
 #define exit exit(0)
 #define co(x) cout << (x) << endl
 
@@ -214,9 +177,8 @@ using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
 const string sl = "";
 const char cl = '\0';
 const ll nl = 0LL;
-const int INFINT = 2147483647;
-const ll INFLL = 9223372036854775807;
-const long double PI = acos(-1);
+const ll INFINT = 2047483647;
+const ll INFLL = 1023372036854775807LL; // だいたい
 const ll mod1 = pow(10, 9) + 1;
 const char sp = ' ';
 const ll j2_32 = pow(2, 32);
@@ -303,6 +265,60 @@ operator*(std::string const &str, int n)
 	return result;
 }
 
+// https://kenkoooo.hatenablog.com/entry/2016/11/30/163533
+std::ostream &operator<<(std::ostream &dest, __int128_t value)
+{
+	std::ostream::sentry s(dest);
+	if (s)
+	{
+		__uint128_t tmp = value < 0 ? -value : value;
+		char buffer[128];
+		char *d = std::end(buffer);
+		do
+		{
+			--d;
+			*d = "0123456789"[tmp % 10];
+			tmp /= 10;
+		} while (tmp != 0);
+		if (value < 0)
+		{
+			--d;
+			*d = '-';
+		}
+		int len = std::end(buffer) - d;
+		if (dest.rdbuf()->sputn(d, len) != len)
+		{
+			dest.setstate(std::ios_base::badbit);
+		}
+	}
+	return dest;
+}
+
+__int128 parse(string &s)
+{
+	__int128 ret = 0;
+	for (ull i = 0; i < s.length(); i++)
+		if ('0' <= s[i] && s[i] <= '9')
+			ret = 10 * ret + s[i] - '0';
+
+	if (s[0] == '-')
+	{
+		ret = -ret;
+	}
+
+	return ret;
+}
+
+istream &operator>>(std::istream &is, __int128_t &value)
+{
+	string tmp;
+	is >> tmp;
+
+	value = parse(tmp);
+
+	return is;
+}
+
 // 関数類
 
 /**
@@ -311,9 +327,10 @@ operator*(std::string const &str, int n)
  * @param num 判定する数値
  * @return bool 素数かどうか
  */
-inline bool isprime(const int num) noexcept(except)
+template <typename T>
+inline bool isprime(const T num) noexcept(except)
 {
-	if (num < 2)
+	if (num < 2) [[unlikely]]
 		return false;
 	else if (num == 2)
 		return true;
@@ -329,32 +346,6 @@ inline bool isprime(const int num) noexcept(except)
 		}
 	}
 	return true;
-}
-
-/**
- * @brief 偶数かどうかチェックします(2,4...)
- *
- * @param x 判定する数値です
- * @return bool 偶数かどうか
- */
-inline bool iseven(const int x) noexcept(except)
-{
-	if (x % 2 == 0)
-		return true;
-	return false;
-}
-
-/**
- * @brief 奇数かどうかをチェックします(1,3...)
- *
- * @param x 判定する数値です
- * @return bool 奇数かどうか
- */
-inline bool isodd(const int x) noexcept(except)
-{
-	if (x % 2 != 0)
-		return true;
-	return false;
 }
 
 /**
@@ -376,9 +367,10 @@ inline int ctoi(const char c) noexcept(except)
  * @param n
  * @return int
  */
-inline int minisum(const int n) noexcept(except)
+template <typename T>
+inline T minisum(const T n) noexcept(except)
 {
-	return n * (n + 1) / 2;
+	return n * (n + (T)1) / (T)2;
 }
 
 /**
@@ -459,9 +451,15 @@ inline bool chmin(T1_ &i, const T2_ j) noexcept(except)
  * @author https://zenn.dev/antyuntyun
  */
 template <typename T>
-inline void print(const vector<T> &v, string s = " ") noexcept(except)
+inline void print(const vector<T> &v, const string &s = " ") noexcept(except)
 {
 	rep(i, v.size()) cout << v[i] << (i != (ll)v.size() - 1 ? s : "\n");
+}
+
+template <typename A, typename B>
+inline void print(const vector<pair<A, B>> &v, const string &s = "\n") noexcept(except)
+{
+	rep(i, v.size()) cout << v[i].first << " " << v[i].second << s;
 }
 
 /// @brief 二次元配列の全要素を出力します
@@ -469,7 +467,7 @@ inline void print(const vector<T> &v, string s = " ") noexcept(except)
 /// @param v 二次元配列
 /// @param s 区切り文字
 template <typename T>
-inline void print(const vector<vector<T>> &v, string s = " ") noexcept(except)
+inline void print(const vector<vector<T>> &v, string const &s = " ") noexcept(except)
 {
 	rep(i, v.size())
 	{
@@ -477,46 +475,16 @@ inline void print(const vector<vector<T>> &v, string s = " ") noexcept(except)
 	}
 }
 
-/**
- * @brief 配列を入力します
- *
- * @tparam Tp1 配列の型
- * @param v 入力する配列
- * @throw 配列の長さが0の場合に投げる
- */
-template <typename Tp1>
-inline void vcin(vector<Tp1> &v)
+template <typename T>
+inline istream &operator>>(istream &os, vector<T> &v)
 {
 	assert(v.size() != 0);
-	rep(i, v.size()) cin >> v[i];
-}
-
-/// @brief 二つの配列を入力します。
-/// @tparam Tp1 1つめの配列の型
-/// @tparam Tp2 2つめの配列の型
-/// @param v 1つめの配列
-/// @param b 2つめの配列
-/// @throw v.size()!=b.size()の場合に投げられます。
-template <typename Tp1, typename Tp2>
-inline void vcin(vector<Tp1> &v, vector<Tp2> &b)
-{
-	assert(v.size() == b.size());
-	rep(i, v.size()) cin >> v[i] >> b[i];
-}
-
-/// @brief 二次元配列を入力します。
-/// @tparam Tp1 vector<vector<Tp1>>の型
-/// @param v 二次元配列
-template <typename Tp1>
-inline void vcin(vector<vector<Tp1>> &v) noexcept(except)
-{
 	rep(i, v.size())
 	{
-		rep(j, v[i].size())
-		{
-			cin >> v[i][j];
-		}
+		cin >> v[i];
 	}
+
+	return os;
 }
 
 /**
@@ -537,13 +505,15 @@ inline string srev(string s) noexcept(except)
 /// @return x^n
 inline unsigned long long pow_ll(unsigned long long x, unsigned long long n) noexcept(except)
 {
-	unsigned long long ret = x;
-	if (n == 0)
-		return 1;
-	for (unsigned long long i = 1; i < n; i++)
+	ull ret = 1;
+	while (n > 0)
 	{
-		ret *= x;
+		if (n & 1)
+			ret *= x;
+		x *= x;
+		n >>= 1;
 	}
+
 	return ret;
 }
 
@@ -720,7 +690,7 @@ inline char decton(const int n)
 /// @param n 文字の進数
 /// @param m 出力の進数
 /// @return M進数の文字
-inline string n_ary(string str, int n, int m)
+inline string n_ary(const string &str, const int n, const int m)
 {
 	unsigned long tmp = 0;
 	string ret;
@@ -740,12 +710,12 @@ inline string n_ary(string str, int n, int m)
 	return ret;
 }
 
-/// @brief nを素因数分解します
+/// @brief
 /// @tparam T nの型
 /// @param n 素因数分解する数
 /// @return 不明
 template <typename T>
-inline map<T, T> prime_factor(T n)
+inline map<T, T> __prime_factor(T n)
 {
 	map<T, T> ret;
 	for (T i = 2; i * i <= n; i++)
@@ -763,14 +733,52 @@ inline map<T, T> prime_factor(T n)
 	return ret;
 }
 
+// O(sqrt(N))
+vector<pair<long long, long long>> prime_factor(long long N)
+{
+	// 答えを表す可変長配列
+	vector<pair<long long, long long>> res;
+
+	// √N まで試し割っていく
+	for (long long p = 2; p * p <= N; ++p)
+	{
+		// N が p で割り切れないならばスキップ
+		if (N % p != 0)
+		{
+			continue;
+		}
+
+		// N の素因数 p に対する指数を求める
+		int e = 0;
+		while (N % p == 0)
+		{
+			// 指数を 1 増やす
+			++e;
+
+			// N を p で割る
+			N /= p;
+		}
+
+		// 答えに追加
+		res.emplace_back(p, e);
+	}
+
+	// 素数が最後に残ることがありうる
+	if (N != 1)
+	{
+		res.emplace_back(N, 1);
+	}
+	return res;
+}
+
 /// @brief Nの約数の数を求めます
 /// @tparam T Nの型
 /// @param N 約数の数を求める数
 /// @return Nの約数の数
 template <typename T>
-inline T divisor_num(T N)
+inline T divisor_num(const T N)
 {
-	map<T, T> pf = prime_factor(N);
+	map<T, T> pf = __prime_factor(N);
 	T ret = 1;
 	for (auto p : pf)
 	{
@@ -782,7 +790,7 @@ inline T divisor_num(T N)
 /// @brief nの約数を全列挙します。(計算量: O(sqrt(N)))
 /// @param n 全列挙する約数
 /// @return nの約数
-inline vll divisor(ll n)
+inline vll divisor(const ll n)
 {
 	vll ret;
 	for (ll i = 1; i * i <= n; i++)
@@ -801,7 +809,7 @@ inline vll divisor(ll n)
 /// @brief 文字列が数字のみか判定します O(|S|)
 /// @param s 判定する文字列
 /// @return 数値でできた文字列かどうか
-inline bool isint(string s) noexcept(except)
+inline bool isint(const string &s) noexcept(except)
 {
 	rep(i, s.size())
 	{
@@ -819,7 +827,7 @@ inline bool isint(string s) noexcept(except)
 /// @param arr 二次元配列
 /// @return 返り値
 template <typename T>
-inline vector<vector<T>> rot90(vector<vector<T>> A)
+inline vector<vector<T>> rot90(const vector<vector<T>> &A)
 {
 	ll N = A.size(), M = A[0].size();
 	vector<vector<T>> ret(M, vector<T>(N));
@@ -843,7 +851,7 @@ inline vector<vector<T>> rot90(vector<vector<T>> A)
 /// @brief 回文かどうか判定
 /// @param str 文字列
 /// @return 回文かどうか
-inline bool ispalind(const string str) noexcept(except)
+inline bool ispalind(const string &str) noexcept(except)
 {
 	int n = str.length();
 	for (int i = 0; i < n / 2; i++)
@@ -860,7 +868,7 @@ inline bool ispalind(const string str) noexcept(except)
 /// @param n 最大値
 /// @param start 開始値
 /// @return startからnまでの順列
-inline vector<ll> range(ll n, ll start = 0)
+inline vector<ll> range(const ll n, const ll start = 0)
 {
 	vector<ll> ret(n - start);
 	ll oi = 0;
@@ -876,7 +884,7 @@ inline vector<ll> range(ll n, ll start = 0)
 /// @brief 10進法で表した時の各桁の和を求めます
 /// @param s 10進法で表した文字列
 /// @return 各桁の和
-inline ll csum(string s) noexcept(except)
+inline ll csum(const string &s) noexcept(except)
 {
 	ll ret = 0;
 	rep(i, s.size())
@@ -890,7 +898,7 @@ inline ll csum(string s) noexcept(except)
 /// @brief csumの数値用の補完関数
 /// @param n 数値
 /// @return 各桁の和
-inline ll csum(ll n) noexcept(except)
+inline ll csum(const ll n) noexcept(except)
 {
 	return csum(to_string(n));
 }
@@ -898,7 +906,7 @@ inline ll csum(ll n) noexcept(except)
 /// @brief 階乗を計算する
 /// @param n nの階乗
 /// @return nの階乗
-inline ll fact(ll n) noexcept(except)
+inline ll fact(const ll n) noexcept(except)
 {
 	ll ret = 1;
 	rep(i, n)
@@ -911,7 +919,7 @@ inline ll fact(ll n) noexcept(except)
 /// @brief 平方数かどうかを判定
 /// @param N 判定する数
 /// @return 平方数かどうか
-inline bool is_squere(long long N) noexcept(except)
+inline bool is_squere(const ll N) noexcept(except)
 {
 	long long r = (long long)floor(sqrt((long double)N)); // 切り捨てした平方根
 	return (r * r) == N;
@@ -922,7 +930,7 @@ inline bool is_squere(long long N) noexcept(except)
 /// @param v 加工する前の配列
 /// @return 加工後の配列(長さは |v|+1 となります。)
 template <typename T>
-inline vector<T> cumulative(vector<T> v) noexcept(except)
+inline vector<T> cumulative(const vector<T> &v) noexcept(except)
 {
 	vector<T> cum(v.size() + 1);
 	cum[0] = 0;
@@ -938,7 +946,7 @@ inline vector<T> cumulative(vector<T> v) noexcept(except)
 /// @param v 加工前の配列
 /// @return 加工後の配列(長さはそれぞれ+1になります)
 template <typename T>
-inline vector<vector<T>> cumulative(vector<vector<T>> v)
+inline vector<vector<T>> cumulative(const vector<vector<T>> &v)
 {
 	assert(v.size() > 0);
 	ll H = v.size(), W = v[0].size();
@@ -966,9 +974,18 @@ inline vector<vector<T>> cumulative(vector<vector<T>> v)
 /// @param l 最小値
 /// @param r 最大値
 /// @return
-inline ll random(ll l, ll r) noexcept(except)
+inline ll randint(const ll l, const ll r) noexcept(except)
 {
+	if (l == r)
+		return l;
 	return l + (rand() % (r - l));
+}
+
+/// @brief ランダムな小数を返す(0<=x<=1)
+/// @return 0<=x<=1
+inline ld randd() noexcept(except)
+{
+	return 1.0L * rand() / RAND_MAX;
 }
 
 /// @brief 高速全探索 O(log N)
@@ -977,7 +994,7 @@ inline ll random(ll l, ll r) noexcept(except)
 /// @param x 探索するやつ
 /// @return 数
 template <typename _Tp>
-inline long long bound_count(std::vector<_Tp> v, _Tp x) noexcept(except)
+inline long long bound_count(const vector<_Tp> &v, const _Tp &x) noexcept(except)
 {
 	auto l = lower_bound(v.begin(), v.end(), x);
 	auto u = upper_bound(v.begin(), v.end(), x);
@@ -1003,7 +1020,7 @@ inline long long bound_count(std::vector<_Tp> v, _Tp x) noexcept(except)
 /// @param x 最近値を求める値
 /// @return xの最近値
 template <typename T>
-inline T recent(vector<T> v, T x)
+inline T recent(const vector<T> &v, const T &x)
 {
 	auto it = lower_bound(all(v), x);
 
@@ -1023,14 +1040,395 @@ inline T recent(vector<T> v, T x)
 	}
 }
 
+template <typename T>
+inline vector<vector<T>> make_vec2(const ull H, const ull W, const T &init)
+{
+	return vector<vector<T>>(H, vector<T>(W, init));
+}
+
+template <typename T>
+inline vector<vector<T>> make_vec2(const ull H, const ull W)
+{
+	return vector<vector<T>>(H, vector<T>(W));
+}
+
+/// @brief 文字列圧縮
+/// @param str 圧縮する文字列
+/// @return 圧縮後
+inline vector<pair<char, ull>> rlencode(const string &str) noexcept(except)
+{
+	ull n = (ull)str.size();
+	vector<pair<char, ull>> ret;
+	for (ull l = 0; l < n;)
+	{
+		ull r = l + 1;
+		for (; r < n && str[l] == str[r]; r++)
+		{
+		};
+		ret.push_back({str[l], r - l});
+		l = r;
+	}
+	return ret;
+}
+
+template <typename T>
+inline map<T, ll> counter(const vector<T> &v) noexcept(except)
+{
+	map<T, ll> dat;
+	rep(i, v.size())
+	{
+		dat[v[i]]++;
+	}
+
+	return dat;
+}
+
+inline map<char, ll> counter(const string &s) noexcept(except)
+{
+	map<char, ll> dat;
+	rep(i, s.size())
+	{
+		dat[s[i]]++;
+	}
+
+	return dat;
+}
+
+/// @brief ユークリッド距離
+/// @param x1
+/// @param y1
+/// @param x2
+/// @param y2
+/// @return
+inline ld euclidean(const ld x1, const ld y1, const ld x2, const ld y2) noexcept(except)
+{
+	ld dx = x2 - x1;
+	ld dy = y2 - y1;
+
+	ld distance = sqrt(dx * dx + dy * dy);
+
+	return distance;
+}
+
+/// @brief 配列の範囲(閉区間)に属する値の個数を計算
+/// @tparam T 配列の値型
+/// @param v 配列
+/// @param l 左端
+/// @param r 右端
+/// @return
+template <typename T>
+inline ll lencnt(const vector<T> &v, const T &l, const T &r)
+{
+	return upper_bound(all(v), r) - lower_bound(all(v), l);
+}
+
+using GraphKey = ll;
+
+struct CostEdge
+{
+	GraphKey to;
+	ll cost;
+};
+
+ostream &operator<<(ostream &os, const CostEdge &cost)
+{
+	os << "{ to: " << cost.to << ", cost: " << cost.cost << " }";
+
+	return os;
+}
+
+using Edge = GraphKey;
+
+using Graph = vector<vector<Edge>>;
+using CostGraph = vector<vector<CostEdge>>;
+
+inline CostGraph convert_costgraph(const Graph &g) noexcept
+{
+	CostGraph ans(g.size());
+	rep(i, g.size())
+	{
+		rep(j, g[i].size())
+		{
+			ans[i].emplace_back(CostEdge{g[i][j], 1});
+		}
+	}
+
+	return ans;
+}
+
+inline pair<GraphKey, ll> tree_diamiter_dfs(const CostGraph &G, ll u, ll par)
+{ // 最遠点間距離と最遠点を求める
+	pair<GraphKey, ll> ret = make_pair((GraphKey)0, u);
+	for (auto e : G[u])
+	{
+		if (e.to == par)
+			continue;
+		auto next = tree_diamiter_dfs(G, e.to, u);
+		next.first += e.cost;
+		ret = max(ret, next);
+	}
+	return ret;
+}
+
+inline GraphKey tree_diamiter(const CostGraph &G)
+{
+	pair<GraphKey, ll> p = tree_diamiter_dfs(G, 0LL, -1LL);
+	pair<GraphKey, ll> q = tree_diamiter_dfs(G, p.second, -1LL);
+	return q.first;
+}
+
+inline GraphKey tree_diamiter(const Graph &G)
+{
+	return tree_diamiter(convert_costgraph(G));
+}
+
+inline CostEdge make_cost(const GraphKey to, const ll cost) noexcept
+{
+	return CostEdge{to, cost};
+}
+
+inline vector<ll> dijkstra(const CostGraph &G, ll start = 0, ll init = 0)
+{
+	ll n = G.size();
+	assert(0 <= start && start < n);
+	vector<bool> kakutei(n, false);
+	vll cur(n, INFLL);
+
+	reverse_queue<pll> q;
+	cur[start] = init;
+	q.push(make_pair(cur[start], start));
+
+	while (!q.empty())
+	{
+		ll pos = q.top().second;
+		q.pop();
+
+		if (kakutei[pos])
+			continue;
+
+		kakutei[pos] = true;
+		rep(i, G[pos].size())
+		{
+			ll nex = G[pos][i].to;
+			ll cost = G[pos][i].cost;
+			if (cur[nex] > cur[pos] + cost)
+			{
+				cur[nex] = cur[pos] + cost;
+				q.push(make_pair(cur[nex], nex));
+			}
+		}
+	}
+
+	return cur;
+}
+
+inline vector<ll> dijkstra(const CostGraph &G, vll &prv, ll start = 0, ll init = 0)
+{
+	ll n = G.size();
+	assert(0 <= start && start < n);
+	vector<bool> kakutei(n, false);
+	vll cur(n, INFLL);
+	prv.resize(G.size(), -1);
+
+	reverse_queue<pll> q;
+	cur[start] = init;
+	q.push(make_pair(cur[start], start));
+
+	while (!q.empty())
+	{
+		ll pos = q.top().second;
+		q.pop();
+
+		if (kakutei[pos])
+			continue;
+
+		kakutei[pos] = true;
+		rep(i, G[pos].size())
+		{
+			ll nex = G[pos][i].to;
+			ll cost = G[pos][i].cost;
+			if (cur[nex] > cur[pos] + cost)
+			{
+				cur[nex] = cur[pos] + cost;
+				prv[nex] = pos;
+				q.push(make_pair(cur[nex], nex));
+			}
+		}
+	}
+
+	return cur;
+}
+
+inline vector<ll> get_path(const vector<ll> &prev, ll t)
+{
+	vector<ll> path;
+	for (ll cur = t; cur != -1; cur = prev[cur])
+	{
+		path.push_back(cur);
+	}
+	reverse(path.begin(), path.end()); // 逆順なのでひっくり返す
+	return path;
+}
+
+inline vector<ll> dijkstra(const Graph &G, ll start = 0, ll init = 0)
+{
+	return dijkstra(convert_costgraph(G), start, init);
+}
+
+inline vector<vector<ll>> warshall_floyd(const CostGraph &G)
+{
+	ll n = G.size();
+	vvll d = make_vec2<ll>(n, n, INFLL);
+
+	rep(i, n)
+	{
+		d[i][i] = 0;
+	}
+
+	rep(i, n)
+	{
+		rep(j, G[i].size())
+		{
+			d[i][G[i][j].to] = G[i][j].cost;
+		}
+	}
+
+	rep(k, n)
+	{
+		rep(i, n)
+		{
+			rep(j, n)
+			{
+				d[i][j] = min(d[i][j], d[i][k] + d[k][j]);
+			}
+		}
+	}
+
+	return d;
+}
+
+inline vector<vector<ll>> warshall_floyd(const Graph &G)
+{
+	return warshall_floyd(convert_costgraph(G));
+}
+
+template <ull bit, ull n>
+class CustomBit
+{
+public:
+	CustomBit(ull val = 0)
+	{
+		this->__val = val;
+		this->__max_val = pow_ll(bit, n) - 1;
+		this->__reload();
+	}
+
+	ull to_ull() const
+	{
+		return this->__val;
+	}
+
+	// O(1)
+	ull max_val() const
+	{
+		return this->__max_val;
+	}
+
+	// O(1)
+	array<ull, n> get_all() const
+	{
+		return this->__dat;
+	}
+
+	// O(1)
+	ull get(ull x) const
+	{
+		assert(x < n);
+
+		return this->__dat[x];
+	}
+
+	// O(1)
+	constexpr ull size() const
+	{
+		return n;
+	}
+
+	constexpr void set(ull x, ull val)
+	{
+		assert(val < bit);
+		this->__dat[x] = val;
+
+		this->__reload_val();
+	}
+
+	CustomBit &operator++(int)
+	{
+		this->__val++;
+		this->__reload();
+
+		return *this;
+	}
+
+	CustomBit &operator++()
+	{
+		auto tmp = *this;
+		++this->__val;
+
+		this->__reload();
+
+		return tmp;
+	}
+
+private:
+	ull __val;
+	array<ull, n> __dat;
+	ull __max_val;
+
+	void __reload()
+	{
+		assert(0 <= this->__val && this->__val <= this->__max_val);
+		auto tmp = this->__val;
+		for (ll i = 0; i < n; ++i)
+		{
+			this->__dat[i] = tmp % bit;
+			tmp /= bit;
+		}
+	}
+
+	void __reload_val()
+	{
+		this->__val = 0;
+		ull a = 1;
+		for (ll i = 0; i < n; ++i)
+		{
+			this->__val += a * this->__dat[i];
+			a *= bit;
+		}
+	}
+};
+
+template <ull bit, ull n>
+ostream &operator<<(ostream &os, const CustomBit<bit, n> &bits)
+{
+	os << "[";
+	for (ll i = 0; i < n; ++i)
+	{
+		os << bits.get(i) << (i != n - 1 ? ", " : "");
+	}
+	os << "](bit: " << bit << ")";
+
+	return os;
+}
+
 #pragma endregion
 
 /* Variables */
-ll N, M, Q;
+ull N, M, Q;
 ll H, W;
 string S = "", T = "";
 string dump = "";
-ll t = -1;
+ll codeforces_t = -1;
 
 /* Main Function */
 
@@ -1040,19 +1438,9 @@ int main()
 
 	cin >> N;
 
-	auto tmp = n_ary(to_string(N), 10, 2);
-	reverse(all(tmp));
-
-	ll ans = 0;
-	rep(i, tmp.size())
-	{
-		if (tmp[i] == '0')
-			ans++;
-		else
-			break;
-	}
-
-	co(ans);
+	co(countr_zero(N));
 
 	return 0;
 }
+
+/* 文字化け注意 */

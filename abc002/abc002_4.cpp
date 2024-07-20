@@ -297,7 +297,7 @@ std::ostream &operator<<(std::ostream &dest, __int128_t value)
 __int128 parse(string &s)
 {
 	__int128 ret = 0;
-	for (ll i = 0; i < s.length(); i++)
+	for (ull i = 0; i < s.length(); i++)
 		if ('0' <= s[i] && s[i] <= '9')
 			ret = 10 * ret + s[i] - '0';
 
@@ -327,10 +327,9 @@ istream &operator>>(std::istream &is, __int128_t &value)
  * @param num 判定する数値
  * @return bool 素数かどうか
  */
-template <typename T>
-inline bool isprime(const T num) noexcept(except)
+inline bool isprime(const ull num) noexcept(except)
 {
-	if (num < 2) [[unlikely]]
+	if (num < 2)
 		return false;
 	else if (num == 2)
 		return true;
@@ -367,10 +366,9 @@ inline int ctoi(const char c) noexcept(except)
  * @param n
  * @return int
  */
-template <typename T>
-inline T minisum(const T n) noexcept(except)
+inline ull minisum(const ull n) noexcept(except)
 {
-	return n * (n + (T)1) / (T)2;
+	return n * (n + 1ULL) / 2ULL;
 }
 
 /**
@@ -381,8 +379,7 @@ inline T minisum(const T n) noexcept(except)
  * @param s 埋める文字列
  * @return string 0埋め後の文字列
  */
-template <typename T>
-inline string zerou(const T i, string s) noexcept(except)
+inline string zerou(const ull i, string s) noexcept(except)
 {
 	while (s.size() != i)
 		s = '0' + s;
@@ -396,9 +393,9 @@ inline string zerou(const T i, string s) noexcept(except)
  * @param i 変換する数値
  * @return char 変換後の文字
  */
-template <typename T>
-inline char to_char(const T i) noexcept(except)
+inline char to_char(const ull i) noexcept(except)
 {
+	assert(0 <= i && i <= 9);
 	return '0' + i;
 }
 
@@ -1436,22 +1433,42 @@ int main()
 {
 	fastio;
 
-	ll K;
-	cin >> N >> K;
+	cin >> N >> M;
 
-	vll A(N);
-	cin >> A;
-
-	ull ans = minisum(K);
-	set<ll> dat(all(A));
-	for (auto x : dat)
+	auto G = make_vec2<bool>(N, N, false);
+	rep(i, M)
 	{
-		if (x <= K)
+		ll x, y;
+		cin >> x >> y;
+
+		x--;
+		y--;
+
+		G[x][y] = G[y][x] = true;
+	}
+
+	rep(i, N) G[i][i] = true;
+
+	ll ans = 0;
+	for (ull bit_num = 0; bit_num < (1 << N); ++bit_num)
+	{
+		bitset<12> bit(bit_num);
+
+		bool flag = true;
+		rep(i, N)
 		{
-			ans -= x;
+			if (bit.test(i))
+			{
+				rep(j, N)
+				{
+					if (bit.test(j))
+						flag &= G[i][j];
+				}
+			}
 		}
-		else
-			break;
+
+		if (flag)
+			chmax(ans, bit.count());
 	}
 
 	co(ans);
