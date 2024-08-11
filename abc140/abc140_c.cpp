@@ -1651,13 +1651,19 @@ int main()
 {
     fastio;
 
-    ll K;
-    cin >> N >> K;
+    cin >> N;
+    vll B(N - 1);
+    cin >> B;
 
-    ll tmp = N % K;
+    vll A(N, INFLL);
+    rep(i, N - 1) {
+	chmin(A[i], B[i]);
+	chmin(A[i+1],B[i]);
+    }
 
-    co(min(tmp,K-tmp));
+    debug(A);
 
+    co(sum(A));
 
 	return 0;
 }

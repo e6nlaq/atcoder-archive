@@ -17,8 +17,26 @@
 // Return Code 139(out_of_range)が出たら試す
 // #define _GLIBCXX_DEBUG
 
+// Boost系
+// #include <boost/multiprecision/cpp_int.hpp> 			 // クソでか整数
+// #include <boost/multiprecision/cpp_dec_float.hpp>	 // クソでか小数
+// #include <boost/math/constants/constants.hpp>		 // ウルトラ円周率
+// #include <boost/date_time/gregorian/gregorian.hpp>	 // 申し訳程度の日付演算
 
-/* #region AtCoder Template */
+// #include <boost/algorithm/string/split.hpp>			 // 文字列をcharで分割(split)
+// #include <boost/algorithm/string/classification.hpp> // 上の文字指定に必要
+// #include <boost/algorithm/string/iter_find.hpp>		 // 文字列をstringで分割(iter_split)
+// #include <boost/algorithm/string/finder.hpp>		 // 上の文字列指定に必要
+
+// #include <boost/algorithm/string/join.hpp>			 // 他の言語のjoinを実装するやつ
+// #include <boost/algorithm/string/replace.hpp>		 // 全部置き換え
+
+// #include <boost/dynamic_bitset.hpp>					 // サイズ変更可bitset
+// #include <boost/range/algorithm/for_each.hpp>		 // 関数でforeach文
+
+// #include <boost/assert.hpp> // 上位デバッグ
+
+#pragma region AtCoder Template
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -37,7 +55,6 @@ using namespace atcoder;
 #ifdef LOCAL
 #include "./lib/debug_print.hpp"
 #define debug(...) debug_print::multi_print(#__VA_ARGS__, __VA_ARGS__)
-const int usedebugprintcheck=debug_print::use;
 #else
 #define debug(...) (static_cast<void>(0))
 #endif
@@ -77,7 +94,6 @@ using pdd = pair<ld, ld>;
 using psl = pair<string, ll>;
 using pcl = pair<char, ll>;
 using vvll = vector<vll>;
-using vvvll = vector<vvll>;
 using vvc = vector<vc>;
 using vvs = vector<vs>;
 using vvb = vector<vb>;
@@ -104,12 +120,6 @@ using unset = unordered_set<Tp>;
 
 template <typename Tp>
 using reverse_queue = priority_queue<Tp, vector<Tp>, greater<Tp>>;
-
-template <typename T>
-using vec2 = vector<vector<T>>;
-
-template <typename T>
-using vec3 = vector<vector<vector<T>>>;
 
 #if __cplusplus >= 202002L
 #define concept_enable
@@ -500,40 +510,16 @@ inline string srev(string s) noexcept(except)
 /// @return x^n
 inline unsigned long long pow_ll(unsigned long long x, unsigned long long n) noexcept(except)
 {
-	ull ret = 1LL;
+	ull ret = 1;
 	while (n > 0)
 	{
-		if (n & 1LL)
+		if (n & 1)
 			ret *= x;
 		x *= x;
-		n >>= 1LL;
+		n >>= 1;
 	}
 
 	return ret;
-}
-
-template <typename T>
-inline vector<vector<T>> make_vec2(const ull H, const ull W, const T &init)
-{
-	return vector<vector<T>>(H, vector<T>(W, init));
-}
-
-template <typename T>
-inline vector<vector<T>> make_vec2(const ull H, const ull W)
-{
-	return vector<vector<T>>(H, vector<T>(W));
-}
-
-template <typename T>
-inline vector<vector<vector<T>>> make_vec3(const ull X, const ull Y, const ull Z, const T &init)
-{
-	return vector<vector<vector<T>>>(X, make_vec2<T>(Y, Z, init));
-}
-
-template <typename T>
-inline vector<vector<vector<T>>> make_vec3(const ull X, const ull Y, const ull Z)
-{
-	return vector<vector<vector<T>>>(X, make_vec2<T>(Y, Z));
 }
 
 /// @brief N進数の文字から10進数の数値に変換します
@@ -980,11 +966,11 @@ inline vector<T> cum(const vector<T> &v) noexcept(except)
 /// @param v 加工前の配列
 /// @return 加工後の配列(長さはそれぞれ+1になります)
 template <typename T>
-inline vec2<T> cum(const vec2<T> &v)
+inline vector<vector<T>> cum(const vector<vector<T>> &v)
 {
 	assert(v.size() > 0);
 	ll H = v.size(), W = v[0].size();
-	auto ret = make_vec2<T>(H + 1, W + 1, 0);
+	vector<vector<T>> ret(H + 1, vector<T>(W + 1, 0));
 	for (int i = 1; i <= H; i++)
 	{
 		for (int j = 1; j <= W; j++)
@@ -1002,44 +988,6 @@ inline vec2<T> cum(const vec2<T> &v)
 	}
 
 	return ret;
-}
-
-template <typename T>
-inline vec3<T> cum(const vec3<T> &v)
-{
-	assert(v.size() > 0 && v[0].size() > 0);
-	ll x = v.size();
-	ll y = v[0].size();
-	ll z = v[0][0].size();
-	auto ret = make_vec3<T>(x + 1, y + 1, z + 1, 0);
-
-	for (ll i = 0; i < x; ++i)
-	{
-		for (ll j = 0; j < y; ++j)
-		{
-			for (ll k = 0; k < z; ++k)
-			{
-				ret[i + 1][j + 1][k + 1] =
-					ret[i][j + 1][k + 1] + ret[i + 1][j][k + 1] +
-					ret[i + 1][j + 1][k] - ret[i][j][k + 1] - ret[i][j + 1][k] -
-					ret[i + 1][j][k] + ret[i][j][k] + v[i][j][k];
-			}
-		}
-	}
-
-	return ret;
-}
-
-template <typename T>
-inline ll cumcnt(const vec2<T> &z, ll lx, ll ly, ll rx, ll ry)
-{
-	return z[rx][ry] + z[lx - 1][ly - 1] - z[lx - 1][ry] - z[rx][ly - 1];
-}
-
-template <typename T>
-inline ll cumcnt(const vec3<T> &z, ll lx, ll ly, ll lz, ll rx, ll ry, ll rz)
-{
-	return z[rx][ry][rz] - z[lx - 1][ry][rz] - z[rx][ly - 1][rz] - z[rx][ry][lz - 1] + z[lx - 1][ly - 1][rz] + z[lx - 1][ry][lz - 1] + z[rx][ly - 1][lz - 1] - z[lx - 1][ly - 1][lz - 1];
 }
 
 #ifdef concept_enable
@@ -1128,6 +1076,18 @@ inline T recent(const vector<T> &v, const T &x)
 				return *prev(it, 1);
 		}
 	}
+}
+
+template <typename T>
+inline vector<vector<T>> make_vec2(const ull H, const ull W, const T &init)
+{
+	return vector<vector<T>>(H, vector<T>(W, init));
+}
+
+template <typename T>
+inline vector<vector<T>> make_vec2(const ull H, const ull W)
+{
+	return vector<vector<T>>(H, vector<T>(W));
 }
 
 /// @brief 文字列圧縮
@@ -1594,7 +1554,7 @@ inline vector<FromCostEdge> to_fromcostedges(const CostGraph &g)
 	{
 		rep(j, g[i].size())
 		{
-			dat.emplace_back(FromCostEdge{{g[i][j].to, g[i][j].cost}, i});
+			dat.emplace_back(FromCostEdge{g[i][j].to, g[i][j].cost, i});
 		}
 	}
 
@@ -1636,7 +1596,7 @@ inline T sum(const vector<T> &v)
 	return ans;
 }
 
-/* #endregion */
+#pragma endregion
 
 /* Variables */
 ll N, M, K, Q;
@@ -1649,15 +1609,40 @@ ll codeforces_t = -1;
 
 int main()
 {
-    fastio;
+	fastio;
 
-    ll K;
-    cin >> N >> K;
+	unset<ll> dat;
+	map<ll, ll> cnt;
+	cin >> Q;
+	rep(_query, Q)
+	{
+		ll q;
+		cin >> q;
+		if (q == 1)
+		{
+			ll x;
+			cin >> x;
 
-    ll tmp = N % K;
+			cnt[x]++;
+			if (cnt[x] == 1)
+				dat.emplace(x);
+		}
+		elif (q == 2)
+		{
+			ll x;
+			cin >> x;
 
-    co(min(tmp,K-tmp));
-
+			cnt[x]--;
+			if (cnt[x] == 0)
+			{
+				dat.erase(x);
+			}
+		}
+		else
+		{
+			co(dat.size());
+		}
+	}
 
 	return 0;
 }

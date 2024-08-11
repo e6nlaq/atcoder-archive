@@ -1651,13 +1651,27 @@ int main()
 {
     fastio;
 
-    ll K;
-    cin >> N >> K;
+    cin >> N;
+    vll A(N);
+    cin >> A;
 
-    ll tmp = N % K;
+    sort(all(A));
 
-    co(min(tmp,K-tmp));
+    ll mod = 1e8;
 
+    ll cnt = sum(A);
+    ll ans=0;
+    rep(i, N) {
+	ll l = mod - A[i];
+	ans += A[i] * (N-1) + cnt-A[i];
+	debug(ans,l);
+
+	ans -= mod * lencnt(A, l, INFLL);
+	if(A[i]*2>=mod)ans+=mod;
+	debug(ans);
+    }
+
+    co(ans/2);
 
 	return 0;
 }
