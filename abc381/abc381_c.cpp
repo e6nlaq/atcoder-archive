@@ -1690,7 +1690,7 @@ int main() {
     ll ans = 1;
 
     rep(i, dat.size()) {
-        if (dat[i].first == '/') {
+        if (dat[i].first == '/'&&dat[i].second==1) {
             if (i == 0 || i == dat.size() - 1) {
                 continue;
             }
