@@ -1,46 +1,12 @@
-/*------------------------------------------------------------
+import { readFileSync } from 'node:fs';
 
-
-	   Welcome to my program!
-	   DON'T HACK PLEASE!!!!!!!!
-
-	  ∧＿∧        AtCoder / Codeforces / yukicoder
-	 ( 　･ω･)
-	＿(__つ/￣￣￣ /  
-	  ＼/　　　　 /   TypeScript 5.1.6 + Node.js v18.16.1
-		￣￣￣￣￣
-		   Let's write Code!
-
-
-------------------------------------------------------------*/
-
-//#region Lib
-
-/* eslint-disable */
-
-import { readFileSync } from 'fs';
-import * as mathjs from 'mathjs';
-import * as std from 'tstl';
-
-const dx: number[] = [0, 0, 1, -1];
-const dy: number[] = [1, -1, 0, 0];
-
-// #endregion
-
-let N: number, M: number;
-let H: number, W: number;
-let Q: number;
-let S: string = '';
-
-/* eslint-enable */
-
-class DSU {
+export class DSU {
 	private _n: number;
-	private parentOrSize: number[];
+	private parent_or_size: Int32Array;
 
 	constructor(n = 0) {
 		this._n = n;
-		this.parentOrSize = new Array(n).fill(-1);
+		this.parent_or_size = new Int32Array(n).fill(-1);
 	}
 
 	merge(a: number, b: number): number {
@@ -49,11 +15,11 @@ class DSU {
 		let x = this.leader(a);
 		let y = this.leader(b);
 		if (x === y) return x;
-		if (-this.parentOrSize[x] < -this.parentOrSize[y]) {
+		if (-this.parent_or_size[x] < -this.parent_or_size[y]) {
 			[x, y] = [y, x];
 		}
-		this.parentOrSize[x] += this.parentOrSize[y];
-		this.parentOrSize[y] = x;
+		this.parent_or_size[x] += this.parent_or_size[y];
+		this.parent_or_size[y] = x;
 		return x;
 	}
 
@@ -65,20 +31,20 @@ class DSU {
 
 	leader(a: number): number {
 		this.assertInRange(a);
-		if (this.parentOrSize[a] < 0) return a;
+		if (this.parent_or_size[a] < 0) return a;
 
-		this.parentOrSize[a] = this.leader(this.parentOrSize[a]);
-		return this.parentOrSize[a];
+		this.parent_or_size[a] = this.leader(this.parent_or_size[a]);
+		return this.parent_or_size[a];
 	}
 
 	size(a: number): number {
 		this.assertInRange(a);
-		return -this.parentOrSize[this.leader(a)];
+		return -this.parent_or_size[this.leader(a)];
 	}
 
 	groups(): number[][] {
-		const leaderBuf = new Array(this._n).fill(0).map((_, i) => this.leader(i));
-		const groupSize = new Array(this._n).fill(0);
+		const leaderBuf = new Int32Array(this._n).map((_, i) => this.leader(i));
+		const groupSize = new Int32Array(this._n);
 
 		for (const leader of leaderBuf) {
 			groupSize[leader]++;
@@ -88,7 +54,7 @@ class DSU {
 		for (let i = 0; i < this._n; i++) {
 			result[leaderBuf[i]].push(i);
 		}
-		return result.filter((group) => group.length > 0);
+		return result.filter(group => group.length > 0);
 	}
 
 	private assertInRange(a: number): void {
@@ -98,44 +64,21 @@ class DSU {
 	}
 }
 
-
-// Functions
-
-let t:number[],u:number[],v:number[];
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function inputs(inp: string[][]): void {
-	// Input
-	[N, Q] = inp[0].map(Number);
-	t = new Array(Q);
-	u = new Array(Q);
-	v = new Array(Q);
-	for (let i = 0; i < Q; ++i){
-		[t[i],u[i],v[i]]=inp[i+1].map(Number);
-	}
-}
-
-function main(): void {
-	// Main function
+function main(inp: string[][]): void {
+	const [N, Q] = inp[0].map(Number);
 	const uf = new DSU(N);
-	for (let i = 0; i < Q; ++i){
-		if (t[i] == 0) {
-			uf.merge(u[i], v[i]);
+	for (let i = 0; i < Q; i++) {
+		const [t, u, v] = inp[i + 1].map(Number);
+		if (t === 0) {
+			uf.merge(u, v);
 		} else {
-			console.log(Number(uf.same(u[i], v[i])));
+			console.log(uf.same(u, v) ? '1' : '0');
 		}
 	}
-
 }
 
-// #region 入力
-
-inputs(
+main(
 	readFileSync('/dev/stdin', 'utf-8')
 		.split('\n')
 		.map(line => line.split(' ')),
 );
-
-main();
-
-// #endregion
