@@ -1,15 +1,15 @@
 /*------------------------------------------------------------
 
 
-                   Welcome to my program!
-                   PLEASE DON'T HACK ME...
+               Welcome to my program!
+               @x__0 / @e6nlaq
 
-                　　∧＿∧        AtCoder / Codeforces / yukicoder etc
-                　 ( 　･ω･)
-                ＿(__つ/￣￣￣ /
-                　　＼/　　　　 /  C++ GCC 14.0.1
-                　　　　￣￣￣￣￣
-                                   Let's write Code!
+            　　∧＿∧        AtCoder / Codeforces  etc...
+            　 ( 　･ω･)
+            ＿(__つ/￣￣￣ /
+            　　＼/　　　　 /  C++ GCC 14.0.1
+            　　　　￣￣￣￣￣
+                               Let's write Code!
 
 
 ------------------------------------------------------------*/
@@ -20,6 +20,7 @@
 /* #region AtCoder Template */
 
 #include <bits/stdc++.h>
+
 using namespace std;
 
 // ローカル環境チェック
@@ -97,12 +98,6 @@ auto _unnsedcpnamespaceunwarn = cp::options::es_value;
 #pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
 #pragma GCC optimize("O3")
 #pragma GCC optimize("unroll-loops")
-
-#define fastio                         \
-    cin.tie(nullptr);                  \
-    ios::sync_with_stdio(false);       \
-    cout << fixed << setprecision(15); \
-    srand((unsigned)time(NULL));
 
 // 型省略
 using uint = unsigned;
@@ -227,6 +222,8 @@ const vector<int> ex = {-1, -1, -1, 0, 0, 1, 1, 1};
 const vector<int> ey = {-1, 0, 1, -1, 1, -1, 0, 1};
 const string spa = " ";
 constexpr bool except = true;
+
+mt19937_64 rng;
 
 // 色々なテンプレ(完全コピペ)
 
@@ -973,13 +970,24 @@ inline vec3<T> cum(const vec3<T> &v) {
     return ret;
 }
 
+// 0-indexed
 template <typename T>
 inline ll cumcnt(const vec2<T> &z, ll lx, ll ly, ll rx, ll ry) {
+    lx++;
+    ly++;
+    rx++;
+    ry++;
     return z[rx][ry] + z[lx - 1][ly - 1] - z[lx - 1][ry] - z[rx][ly - 1];
 }
 
 template <typename T>
 inline ll cumcnt(const vec3<T> &z, ll lx, ll ly, ll lz, ll rx, ll ry, ll rz) {
+    lx++;
+    ly++;
+    lz++;
+    rx++;
+    ry++;
+    rz++;
     return z[rx][ry][rz] - z[lx - 1][ry][rz] - z[rx][ly - 1][rz] - z[rx][ry][lz - 1] + z[lx - 1][ly - 1][rz] + z[lx - 1][ry][lz - 1] + z[rx][ly - 1][lz - 1] - z[lx - 1][ly - 1][lz - 1];
 }
 
@@ -1005,13 +1013,7 @@ inline vector<T> cumxor(const vector<T> &x) {
 inline ll randint(const ll l, const ll r) noexcept(except) {
     if (l == r)
         return l;
-    return l + (rand() % (r - l));
-}
-
-/// @brief ランダムな小数を返す(0<=x<=1)
-/// @return 0<=x<=1
-inline ld randd() noexcept(except) {
-    return 1.0L * rand() / RAND_MAX;
+    return l + (rng() % (r - l + 1));
 }
 
 /// @brief 高速全探索 O(log N)
@@ -1300,6 +1302,45 @@ inline vector<vector<ll>> warshall_floyd(const Graph &G) {
     return warshall_floyd(to_costgraph(G));
 }
 
+inline vll TopologicalSort(const Graph &graph) {
+    vll indegrees(graph.size());
+
+    for (const auto &v : graph) {
+        for (const auto &to : v) {
+            ++indegrees[to];
+        }
+    }
+
+    reverse_queue<ll> pq;
+
+    for (int i = 0; i < (int)graph.size(); ++i) {
+        if (indegrees[i] == 0) {
+            pq.push(i);
+        }
+    }
+
+    vll result;
+
+    while (!pq.empty()) {
+        const int from = pq.top();
+        pq.pop();
+
+        result.push_back(from);
+
+        for (const auto &to : graph[from]) {
+            if (--indegrees[to] == 0) {
+                pq.push(to);
+            }
+        }
+    }
+
+    if (result.size() != graph.size()) {
+        return {};
+    }
+
+    return result;
+}
+
 template <ull bit, ull n>
 class CustomBit {
    public:
@@ -1573,6 +1614,71 @@ inline void gmerge(CostGraph &g, ull a, ull b, ll c) {
     g[b].emplace_back(make_cost(a, c));
 }
 
+// https://x.gd/a7Yhv
+inline constexpr ll mmod(ll x, ll m) noexcept {
+    return (x % m + m) % m;
+}
+
+// Hash
+constexpr ll HMOD = (1LL << 61LL) - 1LL;
+ll HB = 0;
+vll HPOW;
+bool inited_hpow = false;
+
+inline void fastio() noexcept {
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    cout << fixed << setprecision(15);
+    rng = mt19937_64(chrono::steady_clock::now().time_since_epoch().count());
+    HB = randint(150, HMOD - 10);
+}
+
+inline vll str_to_vec(const string &s) {
+    vll ans(s.size());
+    rep(i, s.size()) {
+        ans[i] = s[i];
+    }
+
+    return ans;
+}
+
+inline ll hmod_mul(ll x, ll y) {
+    int128_t t = int128_t(x) * int128_t(y);
+    t = (t >> 61) + (t & HMOD);
+
+    if (t >= HMOD) return t - HMOD;
+    return ll(t);
+}
+
+inline void init_hash(ll n) {
+    HPOW.resize(n + 1);
+    HPOW[0] = 1;
+    irep(i, n) HPOW[i] = hmod_mul(HPOW[i - 1], HB);
+
+    inited_hpow = true;
+}
+
+inline vll rolling_hash(const vll &a) {
+    assert(inited_hpow);
+
+    vll h(a.size() + 1);
+    h[0] = 0;
+    irep(i, a.size()) h[i] = (hmod_mul(h[i - 1], HB) + (a[i - 1] % HMOD)) % HMOD;
+
+    return h;
+}
+
+inline vll rolling_hash(const string &s) {
+    return rolling_hash(str_to_vec(s));
+}
+
+inline ll get_hash(const vll &h, ll l, ll r) {
+    ll val = h[r + 1] - hmod_mul(h[l], HPOW[r - l + 1]);
+    if (val < 0) val += HMOD;
+
+    return val;
+}
+
 #endif
 
 /* #endregion */
@@ -1587,23 +1693,24 @@ ll codeforces_t = -1;
 /* Main Function */
 
 int main() {
-    fastio;
+    fastio();
 
     cin >> N;
+
     vll A(N);
     cin >> A;
 
-    vll B(N, -1);
-    map<ll, ll> dat;
+    unmap<ll, ll> pos;
     rep(i, N) {
-        if (dat[A[i]] != 0) {
-            B[i] = dat[A[i]];
-        }
+        ll x;
+        if (!pos.contains(A[i]))
+            x = -1;
+        else
+            x = pos[A[i]];
 
-        dat[A[i]] = i + 1;
+        pos[A[i]] = i + 1;
+        cout << x << spa;
     }
-
-    print(B);
 
     return 0;
 }

@@ -1695,57 +1695,48 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N;
+    cin >> codeforces_t;
 
-    ll Mg;
-    cin >> Mg;
+    while (codeforces_t--) {
+        cin >> N >> M;
 
-    auto G = make_vec2<bool>(N, N, false);
-    rep(i, Mg) {
-        ll u, v;
-        cin >> u >> v;
+        vll C(N);
+        cin >> C;
 
-        u--;
-        v--;
-        G[u][v] = G[v][u] = true;
-    }
+        Graph G(N);
+        rep(i, M) {
+            ll u, v;
+            cin >> u >> v;
 
-    auto H = make_vec2<bool>(N, N, false);
-    ll Mh;
-    cin >> Mh;
-    rep(i, Mh) {
-        ll u, v;
-        cin >> u >> v;
+            u--;
+            v--;
 
-        u--;
-        v--;
-        H[u][v] = H[v][u] = true;
-    }
-
-    auto A = make_vec2<ll>(N, N);
-    rep(i, N) {
-        arep(j, i + 1, N) {
-            cin >> A[i][j];
-            A[j][i] = A[i][j];
+            gmerge(G, u, v);
         }
-    }
 
-    ll ans = INFLL;
-    vll dat(N);
-    iota(all(dat), 0);
+        // dp[i][j]:=高橋君がiにいるときに青木君がjにいるようにする時の最小行動数
+        auto dp = make_vec2<ll>(N, N, INFLL);
+        dp[0][N - 1] = 0;
+        queue<pll> q;
+        q.push({0, N - 1});
+        while (!q.empty()) {
+            auto [i, j] = q.front();
+            q.pop();
 
-    do {
-        ll now = 0;
-        rep(i, N) {
-            arep(j, i + 1, N) {
-                if (G[i][j] ^ H[dat[i]][dat[j]]) now += A[dat[i]][dat[j]];
+            for (auto x : G[i]) {
+                for (auto y : G[j]) {
+                    if (C[x] != C[y] && dp[x][y] == INFLL) {
+                        dp[x][y] = dp[i][j] + 1;
+                        q.push({x, y});
+                    }
+                }
             }
         }
 
-        chmin(ans, now);
-    } while (next_permutation(all(dat)));
+        debug(dp);
 
-    co(ans);
+        outif(dp[N - 1][0] == INFLL, -1, dp[N - 1][0]);
+    }
 
     return 0;
 }

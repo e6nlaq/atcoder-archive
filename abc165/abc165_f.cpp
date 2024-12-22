@@ -21,6 +21,8 @@
 
 #include <bits/stdc++.h>
 
+#include <algorithm>
+
 using namespace std;
 
 // ローカル環境チェック
@@ -1692,60 +1694,57 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+Graph G;
+vb check;
+vll ans;
+vll a;
+
+void dfs(ll x, vll &dp) {
+    check[x] = true;
+    rep(i, G[x].size()) {
+        ll k = G[x][i];
+        if (check[k]) continue;
+
+        auto it = lower_bound(all(dp), a[k]);
+        assert(it != dp.end());
+        ll old = *it;
+        ll add = (*it == INFLL);
+        *it = a[k];
+
+        ans[k] = ans[x] + add;
+        dfs(k, dp);
+
+        *it = old;
+    }
+}
+
 int main() {
     fastio();
 
     cin >> N;
 
-    ll Mg;
-    cin >> Mg;
+    a.resize(N);
+    cin >> a;
 
-    auto G = make_vec2<bool>(N, N, false);
-    rep(i, Mg) {
+    G.resize(N);
+    check.resize(N, false);
+    ans.resize(N);
+    rep(i, N - 1) {
         ll u, v;
         cin >> u >> v;
 
         u--;
         v--;
-        G[u][v] = G[v][u] = true;
+
+        gmerge(G, u, v);
     }
 
-    auto H = make_vec2<bool>(N, N, false);
-    ll Mh;
-    cin >> Mh;
-    rep(i, Mh) {
-        ll u, v;
-        cin >> u >> v;
+    ans[0] = 1;
+    vll tmp(N, INFLL);
+    tmp[0] = a[0];
+    dfs(0, tmp);
 
-        u--;
-        v--;
-        H[u][v] = H[v][u] = true;
-    }
-
-    auto A = make_vec2<ll>(N, N);
-    rep(i, N) {
-        arep(j, i + 1, N) {
-            cin >> A[i][j];
-            A[j][i] = A[i][j];
-        }
-    }
-
-    ll ans = INFLL;
-    vll dat(N);
-    iota(all(dat), 0);
-
-    do {
-        ll now = 0;
-        rep(i, N) {
-            arep(j, i + 1, N) {
-                if (G[i][j] ^ H[dat[i]][dat[j]]) now += A[dat[i]][dat[j]];
-            }
-        }
-
-        chmin(ans, now);
-    } while (next_permutation(all(dat)));
-
-    co(ans);
+    print(ans);
 
     return 0;
 }

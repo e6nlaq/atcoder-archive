@@ -1695,57 +1695,12 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N;
+    ll A, B, C, D, E;
+    cin >> N >> A >> B >> C >> D >> E;
 
-    ll Mg;
-    cin >> Mg;
+    ll tuku = min({A, B, C, D, E});
 
-    auto G = make_vec2<bool>(N, N, false);
-    rep(i, Mg) {
-        ll u, v;
-        cin >> u >> v;
-
-        u--;
-        v--;
-        G[u][v] = G[v][u] = true;
-    }
-
-    auto H = make_vec2<bool>(N, N, false);
-    ll Mh;
-    cin >> Mh;
-    rep(i, Mh) {
-        ll u, v;
-        cin >> u >> v;
-
-        u--;
-        v--;
-        H[u][v] = H[v][u] = true;
-    }
-
-    auto A = make_vec2<ll>(N, N);
-    rep(i, N) {
-        arep(j, i + 1, N) {
-            cin >> A[i][j];
-            A[j][i] = A[i][j];
-        }
-    }
-
-    ll ans = INFLL;
-    vll dat(N);
-    iota(all(dat), 0);
-
-    do {
-        ll now = 0;
-        rep(i, N) {
-            arep(j, i + 1, N) {
-                if (G[i][j] ^ H[dat[i]][dat[j]]) now += A[dat[i]][dat[j]];
-            }
-        }
-
-        chmin(ans, now);
-    } while (next_permutation(all(dat)));
-
-    co(ans);
+    co(4 + N / tuku + (N % tuku != 0));
 
     return 0;
 }
