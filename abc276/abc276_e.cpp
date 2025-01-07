@@ -1693,27 +1693,47 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+vs C;
+vvb check;
+bool ans = false;
+
+void dfs(ll x, ll y, ll t) {
+    check[x][y] = true;
+    rep(i, 4) {
+        ll X = x + dx[i];
+        ll Y = y + dy[i];
+        if (X >= 0 && X < H && Y >= 0 && Y < W) {
+            if (t >= 4 && C[X][Y] == 'S') {
+                ans = true;
+            }
+            if (C[X][Y] != '#' && !check[X][Y]) {
+                dfs(X, Y, t + 1);
+            }
+        }
+    }
+}
+
 int main() {
     fastio();
 
-    cin >> N;
-    map<string, ll> s, t;
-    rep(i, N) {
-        cin >> S;
-        s[S]++;
+    cin >> H >> W;
+    C.resize(H);
+    check = make_vec2<bool>(H, W, false);
+    cin >> C;
+
+    ll sx, sy;
+    rep(i, H) {
+        rep(j, W) {
+            if (C[i][j] == 'S') {
+                sx = i;
+                sy = j;
+            }
+        }
     }
 
-    cin >> M;
-    rep(i, M) {
-        cin >> S;
-        t[S]++;
-    }
+    dfs(sx, sy, 1);
 
-    ll ans = 0;
-    for (auto [s, x] : s) {
-        chmax(ans, x - t[s]);
-    }
-    co(ans);
+    YesNo(ans);
 
     return 0;
 }

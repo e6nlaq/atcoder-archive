@@ -7,9 +7,9 @@
             　　∧＿∧        AtCoder / Codeforces  etc...
             　 ( 　･ω･)
             ＿(__つ/￣￣￣ /
-            　　＼/　　　　 /  C++ GCC 14.0.1
+            　　＼/　　　　 /  C++ GCC 14.2.0
             　　　　￣￣￣￣￣
-                               Let's write Code!
+                               Let's write Codes!
 
 
 ------------------------------------------------------------*/
@@ -88,7 +88,8 @@ CPP_DUMP_SET_OPTION_GLOBAL(detailed_number_es, true);
 
 namespace cp = cpp_dump;
 
-auto _unnsedcpnamespaceunwarn = cp::options::es_value;
+// clangdを黙らせる
+const auto _unnsedcpnamespaceunwarn = cp::options::es_value;
 #else
 #define debug(...)
 #endif
@@ -1697,13 +1698,13 @@ int main() {
 
     ll X;
     cin >> N >> X;
-
     vll x(N);
     cin >> x;
 
     ll ans = 0;
-    rep(i, N) ans = gcd(ans, abs(X - x[i]));
-
+    rep(i, N) {
+        ans = gcd(ans, abs(x[i] - X));
+    }
     co(ans);
 
     return 0;

@@ -1696,24 +1696,31 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N;
-    map<string, ll> s, t;
+    cin >> W >> H >> N;
+    ll lx = 0, rx = W;
+    ll ly = 0, ry = H;
+
     rep(i, N) {
-        cin >> S;
-        s[S]++;
+        ll x, y, a;
+        cin >> x >> y >> a;
+
+        if (a == 1) {
+            chmax(lx, x);
+        }
+        elif (a == 2) {
+            chmin(rx, x);
+        }
+        elif (a == 3) {
+            chmax(ly, y);
+        }
+        else {
+            chmin(ry, y);
+        }
     }
 
-    cin >> M;
-    rep(i, M) {
-        cin >> S;
-        t[S]++;
-    }
+    co(max(0LL, rx - lx) * max(0LL, ry - ly));
 
-    ll ans = 0;
-    for (auto [s, x] : s) {
-        chmax(ans, x - t[s]);
-    }
-    co(ans);
+    debug(lx, rx, ly, ry);
 
     return 0;
 }

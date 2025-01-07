@@ -1696,24 +1696,20 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N;
-    map<string, ll> s, t;
-    rep(i, N) {
-        cin >> S;
-        s[S]++;
-    }
+    ll X, Y;
+    cin >> N >> M >> X >> Y;
+    vll x(N), y(M);
+    cin >> x >> y;
 
-    cin >> M;
-    rep(i, M) {
-        cin >> S;
-        t[S]++;
-    }
+    x.emplace_back(X);
+    y.emplace_back(Y);
 
-    ll ans = 0;
-    for (auto [s, x] : s) {
-        chmax(ans, x - t[s]);
-    }
-    co(ans);
+    sort(all(x));
+    sort(all(y));
+
+    debug(x, y);
+
+    outif(x.back() < y[0], "No War", "War");
 
     return 0;
 }
