@@ -21,7 +21,7 @@
 
 #include <bits/stdc++.h>
 
-#include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -29,6 +29,8 @@ using namespace std;
 #if __has_include("./cpp-dump/cpp-dump.hpp")
 #define LOCAL
 #endif
+
+#undef LOCAL
 
 // AC Library(C++17では使えないので注意)
 #if defined(LOCAL) || defined(ATCODER)
@@ -176,7 +178,7 @@ concept number = integral<T> || floating_point<T>;
 #define rall(x) (x).rbegin(), (x).rend()
 #define fi first
 #define se second
-#define endl "\n"
+// #define endl "\n"
 #define br break
 #define el else
 #define elif else if
@@ -1305,45 +1307,6 @@ inline vector<vector<ll>> warshall_floyd(const Graph &G) {
     return warshall_floyd(to_costgraph(G));
 }
 
-inline vll TopologicalSort(const Graph &graph) {
-    vll indegrees(graph.size());
-
-    for (const auto &v : graph) {
-        for (const auto &to : v) {
-            ++indegrees[to];
-        }
-    }
-
-    reverse_queue<ll> pq;
-
-    for (int i = 0; i < (int)graph.size(); ++i) {
-        if (indegrees[i] == 0) {
-            pq.push(i);
-        }
-    }
-
-    vll result;
-
-    while (!pq.empty()) {
-        const int from = pq.top();
-        pq.pop();
-
-        result.push_back(from);
-
-        for (const auto &to : graph[from]) {
-            if (--indegrees[to] == 0) {
-                pq.push(to);
-            }
-        }
-    }
-
-    if (result.size() != graph.size()) {
-        return {};
-    }
-
-    return result;
-}
-
 template <ull bit, ull n>
 class CustomBit {
    public:
@@ -1682,6 +1645,67 @@ inline ll get_hash(const vll &h, ll l, ll r) {
     return val;
 }
 
+struct TopologicalResult {
+    vector<int> sort;
+    bool just_one;
+};
+
+inline TopologicalResult topological_sort(const Graph &graph) noexcept {
+    // 各頂点の入次数を管理する配列
+    std::vector<int> indegrees(graph.size());
+
+    // 入次数を計算する
+    for (const auto &v : graph) {
+        for (const auto &to : v) {
+            ++indegrees[to];
+        }
+    }
+
+    // 入次数が 0 の頂点を管理するキュー（辞書順最小の結果を得るため、優先度付きキューを使用する）
+    std::priority_queue<int, std::vector<int>, std::greater<>> q;
+
+    // 現時点で入次数が 0 の頂点をすべてキューに追加する
+    for (int i = 0; i < static_cast<int>(graph.size()); ++i) {
+        if (indegrees[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    // 結果（トポロジカル順序）を格納する配列
+    std::vector<int> result;
+
+    bool one = true;
+
+    while (!q.empty()) {
+        if (1 < q.size()) {
+            one = false;
+        }
+
+        // 入次数が 0 の頂点のうち、頂点番号が小さいものから取り出す
+        const int from = q.top();
+        q.pop();
+
+        // トポロジカル順序に追加する
+        result.push_back(from);
+
+        // その頂点から出る各辺について
+        for (const auto &to : graph[from]) {
+            // その先の頂点の入次数を減らし、新たに 0 になったらキューに追加する
+            if (--indegrees[to] == 0) {
+                q.push(to);
+            }
+        }
+    }
+
+    // 閉路が存在する（頂点をすべて処理できていない）場合
+    if (result.size() < graph.size()) {
+        // 空の配列を返す
+        return {{}, false};
+    }
+
+    return {result, one};
+}
+
 #endif
 
 /* #endregion */
@@ -1695,31 +1719,241 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+// class ban {
+//     ban(const vs &c) {
+//         raw = c;
+
+//     }
+
+//    private:
+//     vs raw;
+// };
+
+class Board {
+   public:
+    Board(std::vector<std::string> initial_board) : board(initial_board) {}
+
+    char get_piece(int i, int j) const {
+        if (i < 0 || i >= board.size() || j < 0 || j >= board[0].size()) {
+            throw std::out_of_range("Index out of range");
+        }
+        return board[i][j];
+    }
+
+    void move_row_left(int i) {
+        if (i < 0 || i >= board.size()) {
+            throw std::out_of_range("Row index out of range");
+        }
+        board[i].erase(0, 1);
+        board[i] += '.';  // 空マスを追加 (必要に応じて別の文字に変更)
+    }
+
+    void move_row_right(int i) {
+        if (i < 0 || i >= board.size()) {
+            throw std::out_of_range("Row index out of range");
+        }
+        board[i].pop_back();
+        board[i].insert(0, ".");  // 空マスを追加
+    }
+
+    void move_col_up(int j) {
+        if (j < 0 || j >= board[0].size()) {
+            throw std::out_of_range("Column index out of range");
+        }
+        for (int i = 0; i < board.size() - 1; ++i) {
+            board[i][j] = board[i + 1][j];
+        }
+        board.back()[j] = '.';  // 空マスを追加
+    }
+
+    void move_col_down(int j) {
+        if (j < 0 || j >= board[0].size()) {
+            throw std::out_of_range("Column index out of range");
+        }
+        for (int i = board.size() - 1; i > 0; --i) {
+            board[i][j] = board[i - 1][j];
+        }
+        board[0][j] = '.';  // 空マスを追加
+    }
+
+   private:
+    std::vector<std::string> board;
+};
+
 int main() {
+    auto start = std::chrono::system_clock::now();
     fastio();
 
-    cin >> N >> M;
-    vll P(N);
-    cin >> P;
+    cin >> N;
+    vs C(N);
+    cin >> C;
 
-    vll dat;
-    rep(i, N) {
-        rep(j, N) {
-            P.emplace_back(P[i] + P[j]);
+    // rep(i, N) {
+    //     bool er = false;
+    //     rep(j, N) {
+    //         if (C[i][j] == 'o') {
+    //             rep(_, j) cout << "L " << i << endl;
+    //             er = true;
+    //             break;
+    //         }
+    //     }
+
+    //     if (!er) {
+    //         rep(_, N) cout << "L " << i << endl;
+    //     }
+    // }
+
+    ll nowsi = INFLL;
+    vector<pair<char, ll>> ans;
+
+    while (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() <= 1400) {
+        Board b(C);
+        vector<pair<char, ll>> a;
+        ll oni = 2 * N;
+        // {
+        //     auto r = randint(0, N - 1);
+        //     debug(r);
+        //     rep(i, N) {
+        //         rep(j, N) {
+        //             if (b.get_piece(i, r) == 'x') break;
+        //             if (b.get_piece(i, j) == 'x') {
+        //                 ll p = j;
+        //                 while (r != p) {
+        //                     if (p < r) {
+        //                         if (b.get_piece(i, N - 1) == 'o') {
+        //                             break;
+        //                         }
+
+        //                         if (b.get_piece(i, N - 1) == 'x') oni--;
+        //                         b.move_row_right(i);
+        //                         cout << "R " << i << endl;
+        //                         p++;
+        //                     } else {
+        //                         if (b.get_piece(i, 0) == 'o') {
+        //                             break;
+        //                         }
+
+        //                         if (b.get_piece(i, 0) == 'x') oni--;
+        //                         b.move_row_left(i);
+        //                         cout << "L " << i << endl;
+        //                         p--;
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        while (oni > 0) {
+            // rep(i, N) {
+            // rep(j, N) {
+            auto i = randint(0, N - 1);
+            auto j = randint(0, N - 1);
+            if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+
+            if (b.get_piece(i, j) == 'x') {
+                tuple<char, ll, ll> yar = {'-', INFLL, 0};
+                rep(k, 4) {
+                    if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+                    ll X = i, Y = j;
+                    bool ok = true;
+                    ll cnt = 0;
+                    ll er = 0;
+                    char last = '.';
+                    while (0 <= X && X < N && 0 <= Y && Y < N) {
+                        if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+                        ok &= b.get_piece(X, Y) != 'o';
+                        // last = b.get_piece(X, Y);
+                        er += b.get_piece(X, Y) == 'x';
+                        // debug(er);
+                        if (!ok) break;
+
+                        X += dx[k];
+                        Y += dy[k];
+                        cnt++;
+                    }
+                    // ok = last != 'o';
+
+                    if (ok) {
+                        if (chmin(get<1>(yar), cnt)) {
+                            // yar.first = "RLDU"[k];
+                            get<0>(yar) = "RLDU"[k];
+                            get<2>(yar) = er;
+                        }
+                    }
+                }
+
+                if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+                if (get<0>(yar) != '-') {
+                    auto [_, n, er] = yar;
+                    debug(i, j, n, er);
+                    // oni -= er;
+                    rep(x, (oni < 10 ? n : 1)) {
+                        // cout << _ << spa << (_ == 'R' || _ == 'L' ? i : j) << endl;
+                        a.push_back({_, (_ == 'R' || _ == 'L' ? i : j)});
+
+                        if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+                        switch (_) {
+                            case 'R':
+                                if (b.get_piece(i, N - 1) == 'x') oni--;
+                                b.move_row_right(i);
+                                break;
+                            case 'L':
+                                if (b.get_piece(i, 0) == 'x') oni--;
+                                b.move_row_left(i);
+                                break;
+                            case 'U':
+                                if (b.get_piece(0, j) == 'x') oni--;
+                                b.move_col_up(j);
+                                break;
+                            case 'D':
+                                if (b.get_piece(N - 1, j) == 'x') oni--;
+                                b.move_col_down(j);
+                                break;
+                        };
+                    }
+                } else {
+                    if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1950) exit;
+                    auto r = randint(0, 3);
+                    if (r == 0 && b.get_piece(i, 0) == '.') {
+                        // cout << "L " << i << endl;
+                        a.push_back({'L', i});
+
+                        b.move_row_left(i);
+                    }
+                    if (r == 1 && b.get_piece(i, N - 1) == '.') {
+                        // cout << "R " << i << endl;
+                        a.push_back({'R', i});
+                        b.move_row_right(i);
+                    }
+                    if (r == 2 && b.get_piece(0, j) == '.') {
+                        // cout << "U " << j << endl;
+                        a.push_back({'U', j});
+                        b.move_col_up(j);
+                    }
+                    if (r == 3 && b.get_piece(N - 1, j) == '.') {
+                        // cout << "D " << j << endl;
+                        a.push_back({'D', j});
+                        b.move_col_down(j);
+                    }
+                }
+            }
+            // }
+            // }
+            debug(oni);
         }
+
+        if (chmin(nowsi, a.size())) {
+            ans = a;
+        }
+
+        if (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now() - start).count() >= 1500) exit;
     }
-    P.emplace_back(0);
 
-    sort(all(P));
-
-    ll ans = 0;
-    for (ll i = 0; i < P.size() && P[i] <= M; i++) {
-        auto it = upper_bound(all(P), M - P[i]);
-        it--;
-
-        chmax(ans, P[i] + *it);
+    rep(i, ans.size()) {
+        cout << ans[i].first << spa << ans[i].second << endl;
     }
-    co(ans);
+
+    debug(8 * N * N - ans.size());
 
     return 0;
 }
