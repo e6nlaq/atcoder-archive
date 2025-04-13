@@ -1734,9 +1734,62 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N >> K >> S;
 
-    co("2"_s * count(all(S), '2'));
+    rep(i, N) {
+        if (S[i] == '?') {
+            if (i != 0 && S[i - 1] == 'o') S[i] = '.';
+            if (i != N - 1 && S[i + 1] == 'o') S[i] = '.';
+        }
+    }
+
+    auto dat = rlencode(S);
+    debug(S, dat);
+
+    ll now = 0;
+    ll o = 0;
+    rep(i, dat.size()) {
+        if (dat[i].first == 'o') {
+            now++;
+            o++;
+        }
+        if (dat[i].first == '?') {
+            now += (dat[i].second + 1) / 2;
+        }
+    }
+
+    debug(now);
+    ll i = -1;
+    char prv = '@';
+    string ans = S;
+    rep(k, N) {
+        if (S[k] != prv) {
+            i++;
+            debug(i, S[k], k, N, prv);
+            prv = S[k];
+
+            if (dat[i].first == '?') {
+                ll n = (dat[i].second + 1) / 2;
+                if (now == K && now - n < K) {
+                    if (dat[i].second % 2 == 1) {
+                        rep(j, dat[i].second) {
+                            if (j % 2 == 0) {
+                                ans[k + j] = 'o';
+                            } else
+                                ans[k + j] = '.';
+                        }
+                    }
+                }
+                if (o == K) {
+                    rep(j, dat[i].second) {
+                        ans[k + j] = '.';
+                    }
+                }
+            }
+        }
+    }
+
+    co(ans);
 
     return 0;
 }

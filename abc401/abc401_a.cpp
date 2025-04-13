@@ -1734,9 +1734,9 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N;
 
-    co("2"_s * count(all(S), '2'));
+    outif(200 <= N && N < 300, "Success", "Failure");
 
     return 0;
 }

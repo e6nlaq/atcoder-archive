@@ -1734,9 +1734,84 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N >> M;
 
-    co("2"_s * count(all(S), '2'));
+    Graph G(N);
+    rep(i, M) {
+        ll u, v;
+        cin >> u >> v;
+
+        u--;
+        v--;
+
+        gmerge(G, u, v);
+    }
+
+    vb check(N, false);
+    vll need(N);
+    iota(all(need), 0);
+    {
+        reverse_queue<pll> q;
+        q.emplace(0, 0);  // c,i
+        while (!q.empty()) {
+            auto [c, i] = q.top();
+            q.pop();
+
+            if (check[i]) continue;
+
+            check[i] = true;
+            need[i] = c;
+            for (auto x : G[i]) {
+                if (!check[x]) {
+                    ll nc = max(x, c);
+                    q.emplace(nc, x);
+                }
+            }
+        }
+    }
+
+    rep(i, N - 1) {
+        chmax(need[i + 1], need[i]);
+    }
+
+    debug(check, need);
+
+    ll lim = INFLL;
+    rep(i, N) {
+        if (!check[i]) {
+            lim = i;
+            break;
+        }
+    }
+
+    ll now = 0;
+    vll ans(N, -1);
+    reverse_queue<ll> q;
+    vb added(N, false);
+    q.emplace(0);
+    added[0] = true;
+    while (now < lim && now < N) {
+        if (need[now] > now) {
+            now = need[now];
+            continue;
+        }
+
+        while (!q.empty() && q.top() <= now) {
+            auto i = q.top();
+            q.pop();
+            for (auto x : G[i]) {
+                if (!added[x]) {
+                    added[x] = true;
+                    q.emplace(x);
+                }
+            }
+        }
+
+        ans[now] = q.size();
+        now++;
+    }
+
+    print(ans, "\n");
 
     return 0;
 }

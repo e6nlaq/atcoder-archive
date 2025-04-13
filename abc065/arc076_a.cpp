@@ -1731,12 +1731,26 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+using mint = modint1000000007;
+
+mint fac(ll x) {
+    mint ret = 1;
+    for (ll i = 1; i <= x; ++i) {
+        ret *= i;
+    }
+
+    return ret;
+}
+
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N >> M;
 
-    co("2"_s * count(all(S), '2'));
+    if (abs(N - M) <= 1) {
+        co((fac(N) * fac(M) * (1 + (N == M))).val());
+    } else
+        co(0);
 
     return 0;
 }

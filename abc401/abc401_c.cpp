@@ -1731,12 +1731,25 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+using mint = static_modint<1000000000>;
+
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N >> K;
+    vector<mint> A(N + 1, 1);
+    rep(i, min(K, N + 1)) {
+        A[i] = 1;
+    }
 
-    co("2"_s * count(all(S), '2'));
+    mint sum = K;
+    for (ll i = K; i <= N; ++i) {
+        A[i] = sum;
+        sum -= A[i - K];
+        sum += A[i];
+    }
+
+    co(A[N].val());
 
     return 0;
 }

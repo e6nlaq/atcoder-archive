@@ -1734,9 +1734,20 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> S;
+    cin >> N;
+    bool log = false;
+    ll ans = 0;
+    rep(i, N) {
+        cin >> S;
 
-    co("2"_s * count(all(S), '2'));
+        if (S == "login") log = true;
+        elif (S == "logout") log = false;
+        elif (S == "private") {
+            if (!log) ans++;
+        }
+    }
+
+    co(ans);
 
     return 0;
 }
