@@ -1734,44 +1734,80 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    string T;
-    cin >> N >> T;
+    cin >> H >> W;
 
-    vs S(N);
-    cin >> S;
+    ll r, c;
+    cin >> r >> c;
 
-    vll fr(N, 0), bk(N, 0);
+    map<ll, set<ll>> yoko, tate;
+    cin >> N;
     rep(i, N) {
-        rep(j, S[i].size()) {
-            if (fr[i] != T.size() && S[i][j] == T[fr[i]]) {
-                fr[i]++;
+        ll R, C;
+        cin >> R >> C;
+
+        yoko[R].insert(C);
+        tate[C].insert(R);
+    }
+
+    for (auto &[r, s] : yoko) {
+        s.emplace(W + 1);
+        s.emplace(0);
+    }
+
+    for (auto &[_, s] : tate) {
+        s.emplace(0);
+        s.emplace(H + 1);
+    }
+
+    cin >> Q;
+    while (Q--) {
+        char d;
+        ll l;
+        cin >> d >> l;
+
+        if (d == 'L') {
+            if (!yoko.contains(r)) {
+                c = max(1LL, c - l);
+            } else {
+                auto it = yoko[r].lower_bound(c);
+                it--;
+
+                ll left = *it;
+                c = max(left + 1, c - l);
+            }
+        }
+        elif (d == 'R') {
+            if (!yoko.contains(r)) {
+                c = min(W, c + l);
+            } else {
+                auto it = yoko[r].upper_bound(c);
+                ll right = *it;
+                c = min(right - 1, c + l);
+            }
+        }
+        elif (d == 'U') {
+            if (!tate.contains(c)) {
+                r = max(1LL, r - l);
+            } else {
+                auto it = tate[c].lower_bound(r);
+                it--;
+
+                ll up = *it;
+                r = max(up + 1, r - l);
+            }
+        }
+        elif (d == 'D') {
+            if (!tate.contains(c)) {
+                r = min(H, r + l);
+            } else {
+                auto it = tate[c].upper_bound(r);
+                ll down = *it;
+                r = min(down - 1, r + l);
             }
         }
 
-        rrep(j, S[i].size()) {
-            if (bk[i] != T.size() && S[i][j] == T[T.size() - 1 - bk[i]]) {
-                bk[i]++;
-            }
-        }
+        cout << r << spa << c << endl;
     }
-
-    vll B(T.size() + 1, 0);
-    rep(i, N) {
-        B[bk[i]]++;
-    }
-
-    debug(B);
-    for (ll i = B.size() - 1; i >= 1; i--) {
-        B[i - 1] += B[i];
-    }
-
-    debug(fr, bk, B);
-    ll ans = 0;
-    rep(i, N) {
-        ans += B[T.size() - fr[i]];
-    }
-
-    co(ans);
 
     return 0;
 }

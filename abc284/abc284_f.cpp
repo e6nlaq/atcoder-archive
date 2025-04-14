@@ -21,6 +21,8 @@
 
 #include <bits/stdc++.h>
 
+#include <algorithm>
+
 using namespace std;
 
 // ローカル環境チェック
@@ -1737,41 +1739,43 @@ int main() {
     string T;
     cin >> N >> T;
 
-    vs S(N);
-    cin >> S;
+    init_hash(2 * N);
 
-    vll fr(N, 0), bk(N, 0);
-    rep(i, N) {
-        rep(j, S[i].size()) {
-            if (fr[i] != T.size() && S[i][j] == T[fr[i]]) {
-                fr[i]++;
+    auto s = T;
+    reverse(all(s));
+
+    auto t = rolling_hash(s);
+    auto h = rolling_hash(T);
+
+    rep(i, N + 1) {
+        // ?反転: 2*N-1-N+i~2*N-1-i
+
+        auto l = get_hash(h, 0, i - 1);
+
+        auto r = get_hash(h, 2 * N - (N - i), 2 * N - 1);
+        debug(i, l, r);
+        if (l == get_hash(t, N - i, N - i + i - 1) && r == get_hash(t, N, N + (N - i) - 1)) {
+            string ans = "";
+            rep(j, i) {
+                ans += T[j];
             }
-        }
 
-        rrep(j, S[i].size()) {
-            if (bk[i] != T.size() && S[i][j] == T[T.size() - 1 - bk[i]]) {
-                bk[i]++;
+            string rev = "";
+            rep(j, N - i) {
+                rev += T[2 * N - j - 1];
             }
+
+            reverse(all(rev));
+            debug(ans, rev);
+            ans += rev;
+
+            co(ans);
+            co(i);
+            exit;
         }
     }
 
-    vll B(T.size() + 1, 0);
-    rep(i, N) {
-        B[bk[i]]++;
-    }
-
-    debug(B);
-    for (ll i = B.size() - 1; i >= 1; i--) {
-        B[i - 1] += B[i];
-    }
-
-    debug(fr, bk, B);
-    ll ans = 0;
-    rep(i, N) {
-        ans += B[T.size() - fr[i]];
-    }
-
-    co(ans);
+    co(-1);
 
     return 0;
 }

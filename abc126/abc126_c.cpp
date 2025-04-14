@@ -1734,20 +1734,22 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    ld ans = 0;
     cin >> N >> K;
 
+    ld ans = 0;
+
     irep(i, N) {
-        ll cnt = 0;
         ll now = i;
+        ll cnt = 0;
         while (now < K) {
             now *= 2;
             cnt++;
         }
-        ans += 1 / ld(N * (1LL << cnt));
+
+        ans += (1.0 / N) * (1.0 / (1LL << cnt));
     }
 
-    cout << ans << endl;
+    co(ans);
 
     return 0;
 }
