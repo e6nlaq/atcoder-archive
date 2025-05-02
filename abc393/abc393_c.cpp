@@ -172,11 +172,7 @@ concept number = integral<T> || floating_point<T>;
 // 省略define
 #define all(x) (x).begin(), (x).end()
 #define rall(x) (x).rbegin(), (x).rend()
-#define fi first
-#define se second
 #define endl "\n"
-#define br break
-#define el else
 #define elif else if
 
 template <typename T>
@@ -211,7 +207,7 @@ const string sl = "";
 constexpr char cl = '\0';
 constexpr ll nl = 0LL;
 constexpr ll INFINT = 2047483647;
-constexpr ll INFLL = 1023372036854775807LL;  // だいたい
+constexpr ll INFLL = (1LL << 61);  // だいたい
 const ll mod1 = pow(10, 9) + 1;
 constexpr char sp = ' ';
 const ll j2_32 = pow(2, 32);
@@ -1489,11 +1485,7 @@ inline ll get_mst(const vector<FromCostEdge> &edges, ll v) {
     return sum;
 }
 
-#ifdef cpp20
-template <number T>
-#else
 template <typename T>
-#endif
 inline T sum(const vector<T> &v) {
     T ans = 0;
     rep(i, v.size()) ans += v[i];
@@ -1702,6 +1694,51 @@ inline TopologicalResult topological_sort(const Graph &graph) noexcept {
     return {result, one};
 }
 
+// 共通部分もってる?
+inline bool has_kyotsu(pll l, pll r) noexcept {
+    if (l.first <= r.first && r.second <= l.second) return true;
+    if (r.first <= l.first && l.second <= r.second) return true;
+    if (r.first <= l.first && l.first <= r.second && r.second <= l.second) return true;
+    if (l.first <= r.first && r.first <= l.second && l.second <= r.second) return true;
+
+    return false;
+}
+
+// 共通部分取得
+inline pll get_kyotu(pll l, pll r) noexcept {
+    assert(has_kyotsu(l, r));
+    return {max(l.first, r.first), min(l.second, r.second)};
+}
+
+// nCk
+template <typename mint>
+class Combination {
+   private:
+    static const int MAX = 510000;
+    mint fac[MAX], finv[MAX], inv[MAX];
+
+   public:
+    // テーブルを作る前処理
+    Combination() {
+        const int MOD = mint::mod();
+        fac[0] = fac[1] = 1;
+        finv[0] = finv[1] = 1;
+        inv[1] = 1;
+        for (int i = 2; i < MAX; i++) {
+            fac[i] = fac[i - 1] * i;
+            inv[i] = MOD - inv[MOD % i] * (MOD / i);
+            finv[i] = finv[i - 1] * inv[i];
+        }
+    }
+
+    // 二項係数計算
+    mint COM(int n, int k) const {
+        if (n < k) return 0;
+        if (n < 0 || k < 0) return 0;
+        return fac[n] * finv[k] * finv[n - k];
+    }
+};
+
 #endif
 
 /* #endregion */
@@ -1720,29 +1757,24 @@ int main() {
 
     cin >> N >> M;
 
-    vector<unset<ll>> G(N);
     ll ans = 0;
-    rep(_, M) {
+    vector<unordered_set<ll>> g(N);
+    rep(i, M) {
         ll u, v;
         cin >> u >> v;
-
         u--;
         v--;
-
-        if (u == v) {
+        if (u == v)
             ans++;
-            continue;
-        }
+        else {
+            if (g[u].contains(v)) ans++;
 
-        if (G[u].contains(v)) {
-            ans++;
-            continue;
+            g[u].insert(v);
+            g[v].insert(u);
         }
-
-        G[u].emplace(v);
-        G[v].emplace(u);
     }
-    co(ans);
+
+    cout << ans << endl;
 
     return 0;
 }
