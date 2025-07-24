@@ -1740,33 +1740,6 @@ class Combination {
     }
 };
 
-class imos {
-   private:
-    vll dat;
-
-   public:
-    imos(ll n, ll init = 0) : dat(n + 1, 0) {
-        add(0, n, init);
-    }
-
-    // [l, r) に x を加える
-    // O(1)
-    void add(ull l, ull r, ll x) {
-        assert(l <= r && r <= dat.size());
-        dat[l] += x;
-        dat[r] -= x;
-    }
-
-    // O(n)
-    vll get() const {
-        vll res(dat.size() - 1);
-        res[0] = dat[0];
-        arep(i, 1, res.size()) res[i] = res[i - 1] + dat[i];
-
-        return res;
-    }
-};
-
 #endif
 
 /* #endregion */
@@ -1783,23 +1756,34 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N >> M;
+    cin >> H >> W >> K;
+    vs c(H);
+    cin >> c;
 
-    auto r = randint(0, 1e9);
-    imos dat(N, r);
-    rep(i, M) {
-        ll L, R;
-        cin >> L >> R;
+    ll ans = 0;
+    for (ll h = 0; h < 1 << H; h++) {
+        for (ll w = 0; w < 1 << W; w++) {
+            auto dat = c;
+            rep(i, H) {
+                if ((h >> i) & 1) {
+                    rep(j, W) dat[i][j] = '.';
+                }
+            }
 
-        L--;
-        R--;
-        dat.add(L, R + 1, 1);
+            rep(j, W) {
+                if ((w >> j) & 1) {
+                    rep(i, H) dat[i][j] = '.';
+                }
+            }
+
+            ll cnt = 0;
+            rep(i, H) rep(j, W) if (dat[i][j] == '#') cnt++;
+            if (cnt != K) continue;
+            ans++;
+        }
     }
 
-    auto g = dat.get();
-    debug(g);
-
-    cout << *min_element(g.begin(), g.end()) - r << endl;
+    cout << ans << endl;
 
     return 0;
 }

@@ -1740,33 +1740,6 @@ class Combination {
     }
 };
 
-class imos {
-   private:
-    vll dat;
-
-   public:
-    imos(ll n, ll init = 0) : dat(n + 1, 0) {
-        add(0, n, init);
-    }
-
-    // [l, r) に x を加える
-    // O(1)
-    void add(ull l, ull r, ll x) {
-        assert(l <= r && r <= dat.size());
-        dat[l] += x;
-        dat[r] -= x;
-    }
-
-    // O(n)
-    vll get() const {
-        vll res(dat.size() - 1);
-        res[0] = dat[0];
-        arep(i, 1, res.size()) res[i] = res[i - 1] + dat[i];
-
-        return res;
-    }
-};
-
 #endif
 
 /* #endregion */
@@ -1780,26 +1753,53 @@ ll codeforces_t = -1;
 
 /* Main Function */
 
+vb check;
+vll x;
+CostGraph G;
+bool ans = true;
+
+void dfs(ll now) {
+    check[now] = true;
+
+    for (auto [to, c] : G[now]) {
+        if (check[to]) {
+            ans &= x[to] == x[now] + c;
+            continue;
+        }
+
+        x[to] = x[now] + c;
+        dfs(to);
+    }
+}
+
 int main() {
     fastio();
 
     cin >> N >> M;
 
-    auto r = randint(0, 1e9);
-    imos dat(N, r);
+    G = CostGraph(N);
     rep(i, M) {
-        ll L, R;
-        cin >> L >> R;
+        ll L, R, D;
+        cin >> L >> R >> D;
 
         L--;
         R--;
-        dat.add(L, R + 1, 1);
+
+        G[L].emplace_back(R, D);
+        G[R].emplace_back(L, -D);
     }
 
-    auto g = dat.get();
-    debug(g);
+    x = vll(N);
+    check = vb(N);
 
-    cout << *min_element(g.begin(), g.end()) - r << endl;
+    rep(i, N) {
+        if (check[i]) continue;
+
+        x[i] = 0;
+        dfs(i);
+    }
+
+    cout << (ans ? "Yes" : "No") << endl;
 
     return 0;
 }

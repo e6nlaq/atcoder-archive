@@ -20,6 +20,8 @@
 /* #region AtCoder Template */
 
 #include <bits/stdc++.h>
+
+#include <queue>
 using namespace std;
 
 // ローカル環境チェック
@@ -1740,33 +1742,6 @@ class Combination {
     }
 };
 
-class imos {
-   private:
-    vll dat;
-
-   public:
-    imos(ll n, ll init = 0) : dat(n + 1, 0) {
-        add(0, n, init);
-    }
-
-    // [l, r) に x を加える
-    // O(1)
-    void add(ull l, ull r, ll x) {
-        assert(l <= r && r <= dat.size());
-        dat[l] += x;
-        dat[r] -= x;
-    }
-
-    // O(n)
-    vll get() const {
-        vll res(dat.size() - 1);
-        res[0] = dat[0];
-        arep(i, 1, res.size()) res[i] = res[i - 1] + dat[i];
-
-        return res;
-    }
-};
-
 #endif
 
 /* #endregion */
@@ -1783,23 +1758,43 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N >> M;
+    cin >> H >> W >> N;
 
-    auto r = randint(0, 1e9);
-    imos dat(N, r);
-    rep(i, M) {
-        ll L, R;
-        cin >> L >> R;
-
-        L--;
-        R--;
-        dat.add(L, R + 1, 1);
+    vll R(N), C(N);
+    vll h(H, 0), w(W, 0), ans(N);
+    priority_queue<tuple<ll, ll, ll, ll>> q;
+    rep(i, N) {
+        ll a;
+        cin >> R[i] >> C[i] >> a;
+        R[i]--;
+        C[i]--;
+        q.push({a, R[i], C[i], i});
     }
 
-    auto g = dat.get();
-    debug(g);
+    vll update;
+    ll prv = INFLL;
+    while (!q.empty()) {
+        auto [a, r, c, i] = q.top();
+        q.pop();
 
-    cout << *min_element(g.begin(), g.end()) - r << endl;
+        if (prv != a) {
+            for (auto q : update) {
+                chmax(h[R[q]], ans[q]);
+                chmax(w[C[q]], ans[q]);
+            }
+            update.clear();
+        }
+
+        ll x = max(h[r], w[c]) + 1;
+        ans[i] = x;
+
+        prv = a;
+        update.push_back(i);
+    }
+
+    rep(i, N) {
+        co(ans[i] - 1);
+    }
 
     return 0;
 }

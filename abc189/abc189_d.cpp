@@ -1740,33 +1740,6 @@ class Combination {
     }
 };
 
-class imos {
-   private:
-    vll dat;
-
-   public:
-    imos(ll n, ll init = 0) : dat(n + 1, 0) {
-        add(0, n, init);
-    }
-
-    // [l, r) に x を加える
-    // O(1)
-    void add(ull l, ull r, ll x) {
-        assert(l <= r && r <= dat.size());
-        dat[l] += x;
-        dat[r] -= x;
-    }
-
-    // O(n)
-    vll get() const {
-        vll res(dat.size() - 1);
-        res[0] = dat[0];
-        arep(i, 1, res.size()) res[i] = res[i - 1] + dat[i];
-
-        return res;
-    }
-};
-
 #endif
 
 /* #endregion */
@@ -1783,23 +1756,22 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    cin >> N >> M;
+    cin >> N;
 
-    auto r = randint(0, 1e9);
-    imos dat(N, r);
-    rep(i, M) {
-        ll L, R;
-        cin >> L >> R;
-
-        L--;
-        R--;
-        dat.add(L, R + 1, 1);
+    auto dp = make_vec2<ll>(N + 1, 2, 0);
+    dp[0][0] = dp[0][1] = 1;
+    irep(i, N) {
+        cin >> S;
+        if (S == "AND") {
+            dp[i][0] = 2 * dp[i - 1][0] + dp[i - 1][1];
+            dp[i][1] = dp[i - 1][1];
+        } else {
+            dp[i][0] = dp[i - 1][0];
+            dp[i][1] = 2 * dp[i - 1][1] + dp[i - 1][0];
+        }
     }
 
-    auto g = dat.get();
-    debug(g);
-
-    cout << *min_element(g.begin(), g.end()) - r << endl;
+    co(dp[N][1]);
 
     return 0;
 }
