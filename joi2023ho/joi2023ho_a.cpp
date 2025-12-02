@@ -1824,32 +1824,58 @@ int digits(T n) {
 
 ll N, M, K, Q;
 ll H, W;
-string S = "";
 string dump = "";
 ll codeforces_t = -1;
 
 /* Main Function */
 
+using S = long long;
+using F = long long;
+
+const S INF = 8e18;
+const F ID = 8e18;
+
+S op(S a, S b) { return std::min(a, b); }
+S e() { return INF; }
+S mapping(F f, S x) { return (f == ID ? x : f); }
+F composition(F f, F g) { return (f == ID ? g : f); }
+F id() { return ID; }
+
 int main() {
     fastio();
 
-    ll T;
-    cin >> N >> T;
+    cin >> N;
+
     vll A(N);
     cin >> A;
 
-    rep(i, N) A[i] %= T;
-    sort(all(A));
+    deque<tuple<ll, ll, ll>> st;
+    map<ll, ll> cnt;
 
-    ll ans = A.back() - A[0];
     rep(i, N) {
-        A.emplace_back(A[i] + T);
+        if (cnt[A[i]] > 0) {
+            debug(A[i], st);
+            while (true) {
+                auto [x, l, r] = st.back();
+                if (x == A[i]) break;
+                cnt[x]--;
+                st.pop_back();
+            }
+            auto [_, l, r] = st.back();
+            st.pop_back();
+            st.emplace_back(A[i], l, i);
+        } else {
+            st.emplace_back(A[i], i, i);
+            cnt[A[i]]++;
+        }
     }
+    debug(st);
 
-    rep(i, N - 1) {
-        chmin(ans, A[i] + T - A[i + 1]);
+    while (!st.empty()) {
+        auto [x, l, r] = st.front();
+        rep(_, r - l + 1) co(x);
+        st.pop_front();
     }
-    co(ans / 2 + ans % 2);
 
     return 0;
 }

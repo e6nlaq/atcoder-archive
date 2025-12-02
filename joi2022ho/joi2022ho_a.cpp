@@ -1833,23 +1833,33 @@ ll codeforces_t = -1;
 int main() {
     fastio();
 
-    ll T;
-    cin >> N >> T;
+    cin >> N;
     vll A(N);
     cin >> A;
 
-    rep(i, N) A[i] %= T;
-    sort(all(A));
-
-    ll ans = A.back() - A[0];
+    vector<pll> dat;
     rep(i, N) {
-        A.emplace_back(A[i] + T);
+        ll a = A[i];
+        ll cnt = 1;
+        while (!(a & 1)) {
+            a >>= 1;
+            cnt <<= 1;
+        }
+        dat.emplace_back(a, cnt);
     }
 
-    rep(i, N - 1) {
-        chmin(ans, A[i] + T - A[i + 1]);
+    cin >> Q;
+    ll i = -1;
+    ll cnt = 0;
+    rep(_query, Q) {
+        ll X;
+        cin >> X;
+        while (cnt < X) {
+            i++;
+            cnt += dat[i].second;
+        }
+        co(dat[i].first);
     }
-    co(ans / 2 + ans % 2);
 
     return 0;
 }
