@@ -87,6 +87,8 @@ EXTENSIONS = {
     "Seed7": "sd7",
     "Unison": "u",
 
+    "A言語": "a",
+
     # One-character language
     "C": "c",
     "D": "d",
