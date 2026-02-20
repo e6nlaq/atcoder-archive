@@ -88,6 +88,7 @@ EXTENSIONS = {
     "Unison": "u",
 
     "A言語": "a",
+    "AWK": "awk",
 
     # One-character language
     "C": "c",
